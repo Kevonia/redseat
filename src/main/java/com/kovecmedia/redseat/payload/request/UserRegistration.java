@@ -1,4 +1,6 @@
-package com.kovecmedia.redseat.model;
+package com.kovecmedia.redseat.payload.request;
+
+import java.util.Set;
 
 public class UserRegistration {
 	private String name;
@@ -13,6 +15,8 @@ public class UserRegistration {
 	private String addressline2;
 
 	private String zipcode;
+	
+	 private Set<String> role;
 
 	public UserRegistration() {
 	}
@@ -93,5 +97,13 @@ public class UserRegistration {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+    public Set<String> getRole() {
+        return this.role;
+      }
+      
+      public void setRole(Set<String> role) {
+        this.role = role;
+      }
 
 }

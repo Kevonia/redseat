@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kovecmedia.redseat.model.UserPackages;
+import com.kovecmedia.redseat.payload.respond.UserPackages;
 import com.kovecmedia.redseat.service.UserService;
 
 @RestController

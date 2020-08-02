@@ -2,5 +2,5 @@ package com.kovecmedia.redseat.model;
 
 public enum Roles {
 
-	Admin,User,Guest
+	ROLE_USER,ROLE_MODERATOR,ROLE_ADMIN
 }

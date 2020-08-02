@@ -1,4 +1,4 @@
-package com.kovecmedia.redseat.model;
+package com.kovecmedia.redseat.payload.respond;
 
 import java.util.List;
 

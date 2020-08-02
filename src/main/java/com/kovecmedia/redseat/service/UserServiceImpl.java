@@ -10,6 +10,8 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +23,12 @@ import com.kovecmedia.redseat.doa.RoleRepository;
 import com.kovecmedia.redseat.doa.UserRepository;
 import com.kovecmedia.redseat.entity.Address;
 import com.kovecmedia.redseat.entity.ContactNumber;
-import com.kovecmedia.redseat.entity.Country;
 import com.kovecmedia.redseat.entity.Role;
 import com.kovecmedia.redseat.entity.User;
 import com.kovecmedia.redseat.model.PhoneType;
-import com.kovecmedia.redseat.model.UserPackages;
-import com.kovecmedia.redseat.model.UserRegistration;
+import com.kovecmedia.redseat.payload.request.UserRegistration;
+import com.kovecmedia.redseat.payload.respond.UserPackages;
+import com.kovecmedia.redseat.security.services.UserDetailsImpl;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -48,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private JavaMailSender javaMailSender;
-	
+
 	@Autowired
 	private PackageRepository packageRepository;
 
@@ -66,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public void save(UserRegistration userRegistration) {
+	public void Adduser(UserRegistration userRegistration) {
 		// TODO Auto-generated method stub
 
 		try {
@@ -106,16 +108,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUser(long id) {
-			User tempuser = new User();
-			tempuser = userRepository.getOne(id);
-			user.setName(tempuser.getName());
-			user.setEmail(tempuser.getEmail());
-			user.setId(tempuser.getId());
-			user.setEmail(tempuser.getEmail());
-			user.setCreated_at(tempuser.getCreated_at());
-			user.setUpdate_at(tempuser.getUpdate_at());
-			user.setPhone(tempuser.getPhone());	
-			user.setAddress(tempuser.getAddress());
+		this.user = userRepository.getOne(id);
 		return user;
 	}
 
@@ -147,10 +140,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserPackages getUserPaakages(long id) {
-		
+
 		User tempuser = new User();
 		tempuser = userRepository.getOne(id);
-		UserPackages userPackages =new UserPackages();
+		UserPackages userPackages = new UserPackages();
 		userPackages.setId(id);
 		userPackages.setName(tempuser.getName());
 		userPackages.setPacklist(packageRepository.findByUserId(userRepository.getOne((long) 3)));
@@ -158,5 +151,15 @@ public class UserServiceImpl implements UserService {
 
 		return userPackages;
 	}
+
+	@Override
+	@Transactional
+	public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
+		User user = userRepository.findByEmail(email)
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + email));
+
+		return UserDetailsImpl.build(user);
+	}
+
 
 }
