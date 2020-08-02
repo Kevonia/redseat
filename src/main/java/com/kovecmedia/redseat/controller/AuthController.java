@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kovecmedia.redseat.doa.RoleRepository;
 import com.kovecmedia.redseat.doa.UserRepository;
 import com.kovecmedia.redseat.entity.Role;
-import com.kovecmedia.redseat.entity.User;
 import com.kovecmedia.redseat.jwt.JwtUtils;
 import com.kovecmedia.redseat.model.Roles;
 import com.kovecmedia.redseat.payload.request.LoginRequest;
@@ -51,10 +51,9 @@ public class AuthController {
 
 	@Autowired
 	JwtUtils jwtUtils;
-	
+
 	@Autowired
 	UserService userservice;
-
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -80,40 +79,45 @@ public class AuthController {
 			return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
 		}
 
-
-
 		Set<String> strRoles = signUpRequest.getRole();
-		Set<Role> roles = new HashSet<>();
+		Set<Role> roles = new HashSet<Role>();
 
-		if (strRoles == null) {
-			Role userRole = roleRepository.findByName(Roles.ROLE_USER)
-					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-			roles.add(userRole);
-		} else {
-			strRoles.forEach(role -> {
-				switch (role) {
-				case "admin":
-					Role adminRole = roleRepository.findByName(Roles.ROLE_ADMIN)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(adminRole);
+//		if (strRoles == null) {
+//			Role userRole = roleRepository.findByName(Roles.ROLE_USER)
+//					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//			roles.add(userRole);
+//		} else {
+//			strRoles.forEach(role -> {
+//				switch (role) {
+//				case "admin":
+//					Role adminRole = roleRepository.findByName(Roles.ROLE_ADMIN)
+//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//					roles.add(adminRole);
+//
+//					break;
+//				case "mod":
+//					Role modRole = roleRepository.findByName(Roles.ROLE_MODERATOR)
+//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//					roles.add(modRole);
+//
+//					break;
+//				default:
+//					Role userRole = roleRepository.findByName(Roles.ROLE_USER)
+//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+//					roles.add(userRole);
+//				}
+//			});
+//		}
+//         
 
-					break;
-				case "mod":
-					Role modRole = roleRepository.findByName(Roles.ROLE_MODERATOR)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(modRole);
-
-					break;
-				default:
-					Role userRole = roleRepository.findByName(Roles.ROLE_USER)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(userRole);
-				}
-			});
+		try {
+			userservice.Adduser(signUpRequest, roles);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+                
+			return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+	
 		}
-
-
-		userservice.Adduser(signUpRequest);
 
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 	}

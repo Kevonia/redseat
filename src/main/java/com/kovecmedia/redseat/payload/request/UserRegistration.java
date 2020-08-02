@@ -10,11 +10,11 @@ public class UserRegistration {
 
 	private String email;
 
-	private String addressline1;
+	private String addressLine1;
 
-	private String addressline2;
+	private String addressLine2;
 
-	private String zipcode;
+	private String zipCode;
 	
 	 private Set<String> role;
 
@@ -28,9 +28,9 @@ public class UserRegistration {
 		this.password = password;
 		this.passwordConfirmation = passwordConfirmation;
 		this.phone = phone;
-		this.addressline1 = addressline1;
-		this.addressline2 = addressline2;
-		this.zipcode = zipcode;
+		this.addressLine1 = addressline1;
+		this.addressLine2 = addressline2;
+		this.zipCode = zipcode;
 		this.email = email;
 	}
 
@@ -38,8 +38,8 @@ public class UserRegistration {
 		return name;
 	}
 
-	public void setName(String username) {
-		this.name = username;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getPassword() {
@@ -66,30 +66,6 @@ public class UserRegistration {
 		this.phone = phone;
 	}
 
-	public String getAddressline1() {
-		return addressline1;
-	}
-
-	public void setAddressline1(String addressline1) {
-		this.addressline1 = addressline1;
-	}
-
-	public String getAddressline2() {
-		return addressline2;
-	}
-
-	public void setAddressline2(String addressline2) {
-		this.addressline2 = addressline2;
-	}
-
-	public String getZipCode() {
-		return zipcode;
-	}
-
-	public void setZipcode(String zipcode) {
-		this.zipcode = zipcode;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -97,13 +73,39 @@ public class UserRegistration {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public String getAddressLine1() {
+		return addressLine1;
+	}
+
+	public void setAddressLine1(String addressLine1) {
+		this.addressLine1 = addressLine1;
+	}
+
+	public String getAddressLine2() {
+		return addressLine2;
+	}
+
+	public void setAddressLine2(String addressLine2) {
+		this.addressLine2 = addressLine2;
+	}
+
+	public String getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
+
+	public Set<String> getRole() {
+		return role;
+	}
+
+
+
 	
-    public Set<String> getRole() {
-        return this.role;
-      }
-      
-      public void setRole(Set<String> role) {
-        this.role = role;
-      }
+	
+
 
 }

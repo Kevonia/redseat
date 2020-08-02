@@ -1,15 +1,12 @@
 package com.kovecmedia.redseat.service;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -19,12 +16,12 @@ import com.kovecmedia.redseat.doa.AddressRepository;
 import com.kovecmedia.redseat.doa.ContactNumberRepository;
 import com.kovecmedia.redseat.doa.CountryRepository;
 import com.kovecmedia.redseat.doa.PackageRepository;
-import com.kovecmedia.redseat.doa.RoleRepository;
 import com.kovecmedia.redseat.doa.UserRepository;
 import com.kovecmedia.redseat.entity.Address;
 import com.kovecmedia.redseat.entity.ContactNumber;
 import com.kovecmedia.redseat.entity.Role;
 import com.kovecmedia.redseat.entity.User;
+import com.kovecmedia.redseat.model.Mail;
 import com.kovecmedia.redseat.model.PhoneType;
 import com.kovecmedia.redseat.payload.request.UserRegistration;
 import com.kovecmedia.redseat.payload.respond.UserPackages;
@@ -37,10 +34,10 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private AddressRepository addressRepository;
+	private EmailService emailService;
 
 	@Autowired
-	private RoleRepository roleRepository;
+	private AddressRepository addressRepository;
 
 	@Autowired
 	private ContactNumberRepository contactnumberepository;
@@ -49,14 +46,13 @@ public class UserServiceImpl implements UserService {
 	private CountryRepository countryrepository;
 
 	@Autowired
-	private JavaMailSender javaMailSender;
-
-	@Autowired
 	private PackageRepository packageRepository;
 
 	private User user = new User();
 
 	private Address address = new Address();
+
+	private Mail mail = new Mail();
 
 	private ContactNumber contactNumber = new ContactNumber();
 
@@ -66,14 +62,13 @@ public class UserServiceImpl implements UserService {
 
 	private Set<Role> rolelist = new HashSet<Role>();
 
-	@Transactional
 	@Override
-	public void Adduser(UserRegistration userRegistration) {
-		// TODO Auto-generated method stub
+	@Transactional
+	public void Adduser(UserRegistration userRegistration, Set<Role> roles) throws Exception {
 
 		try {
-			this.address.setAddressline1(userRegistration.getAddressline1());
-			this.address.setAddressline2(userRegistration.getAddressline2());
+			this.address.setAddressline1(userRegistration.getAddressLine1());
+			this.address.setAddressline2(userRegistration.getAddressLine2());
 			this.address.setZipcode(userRegistration.getZipCode());
 			this.address.setCountry(countryrepository.getOne((long) 111));
 
@@ -85,7 +80,7 @@ public class UserServiceImpl implements UserService {
 
 			this.contactlist.add(contactNumber);
 
-			this.rolelist.add(roleRepository.getOne((long) 1));
+			this.rolelist.addAll(roles);
 
 			this.user.setAddress(addresslist);
 			this.user.setPhone(contactlist);
@@ -96,12 +91,26 @@ public class UserServiceImpl implements UserService {
 			this.user.setEmail(userRegistration.getEmail());
 			this.addressRepository.save(address);
 			this.contactnumberepository.save(contactNumber);
+
+			Mail mail = new Mail();
+			mail.setFrom("no-reply@memorynotfound.com");
+			mail.setMailTo("info@memorynotfound.com");
+
+			mail.setSubject("Sending Email with Thymeleaf HTML Template Example");
+
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("name", "Memorynotfound.com");
+			model.put("location", "Belgium");
+			model.put("signature", "http://memorynotfound.com");
+			mail.setProps(model);
+
+			emailService.sendSimpleMessage(mail);
 			this.userRepository.save(user);
 
-			SednHtmlEmail();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new Exception("Oops, Something Went Wrong");
 
 		}
 	}
@@ -116,26 +125,6 @@ public class UserServiceImpl implements UserService {
 	public List<User> getAllUsers() {
 		// TODO Auto-generated method stub
 		return userRepository.findAll();
-	}
-
-	void SednHtmlEmail() throws MessagingException {
-
-		MimeMessage msg = javaMailSender.createMimeMessage();
-
-		// true = multipart message
-		MimeMessageHelper helper = new MimeMessageHelper(msg, true);
-
-		helper.setTo("Kevonia123@gmail.com");
-
-		helper.setFrom("Kevonia123@gmail.com");
-
-		helper.setSubject("Testing from Spring Boot");
-
-		// true = text/html
-		helper.setText("<h1 style=color:red >Welcome to Redseat </h1>", true);
-
-		javaMailSender.send(msg);
-
 	}
 
 	@Override
@@ -160,6 +149,5 @@ public class UserServiceImpl implements UserService {
 
 		return UserDetailsImpl.build(user);
 	}
-
 
 }
