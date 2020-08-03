@@ -26,15 +26,15 @@
         </tr>
         <tr>
             <td bgcolor="#eaeaea" style="padding: 40px 30px 40px 30px;">
-                <p>Dear ${name},</p>
+                <p th:text="${'Dear,' + name}"></p>
                 <p>Sending Email using Spring Boot with <b>Thymeleaf template !!!</b></p>
                 <p>Thanks</p>
             </td>
         </tr>
         <tr>
             <td bgcolor="#777777" style="padding: 30px 30px 30px 30px;">
-                <p>${signature}</p>
-                <p>${location}</p>
+                <p th:text="${signature}"> ${signature}</p>
+                <p th:text="${location}">${location}</p>
             </td>
         </tr>
     </table>

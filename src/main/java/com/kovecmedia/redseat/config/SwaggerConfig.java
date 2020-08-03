@@ -24,6 +24,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @ComponentScan("com.kovecmedia.redseat")
+
 public class SwaggerConfig extends WebMvcConfigurationSupport {
 
 	@Bean

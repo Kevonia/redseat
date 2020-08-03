@@ -34,9 +34,6 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private EmailService emailService;
-
-	@Autowired
 	private AddressRepository addressRepository;
 
 	@Autowired
@@ -92,19 +89,6 @@ public class UserServiceImpl implements UserService {
 			this.addressRepository.save(address);
 			this.contactnumberepository.save(contactNumber);
 
-			Mail mail = new Mail();
-			mail.setFrom("no-reply@memorynotfound.com");
-			mail.setMailTo("info@memorynotfound.com");
-
-			mail.setSubject("Sending Email with Thymeleaf HTML Template Example");
-
-			Map<String, Object> model = new HashMap<String, Object>();
-			model.put("name", "Memorynotfound.com");
-			model.put("location", "Belgium");
-			model.put("signature", "http://memorynotfound.com");
-			mail.setProps(model);
-
-			emailService.sendSimpleMessage(mail);
 			this.userRepository.save(user);
 
 		} catch (Exception e) {

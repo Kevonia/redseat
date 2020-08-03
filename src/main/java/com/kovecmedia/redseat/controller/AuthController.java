@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -82,33 +81,33 @@ public class AuthController {
 		Set<String> strRoles = signUpRequest.getRole();
 		Set<Role> roles = new HashSet<Role>();
 
-//		if (strRoles == null) {
-//			Role userRole = roleRepository.findByName(Roles.ROLE_USER)
-//					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//			roles.add(userRole);
-//		} else {
-//			strRoles.forEach(role -> {
-//				switch (role) {
-//				case "admin":
-//					Role adminRole = roleRepository.findByName(Roles.ROLE_ADMIN)
-//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//					roles.add(adminRole);
-//
-//					break;
-//				case "mod":
-//					Role modRole = roleRepository.findByName(Roles.ROLE_MODERATOR)
-//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//					roles.add(modRole);
-//
-//					break;
-//				default:
-//					Role userRole = roleRepository.findByName(Roles.ROLE_USER)
-//							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-//					roles.add(userRole);
-//				}
-//			});
-//		}
-//         
+		if (strRoles == null) {
+			Role userRole = roleRepository.findByName(Roles.ROLE_USER.name())
+					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+			roles.add(userRole);
+		} else {
+			strRoles.forEach(role -> {
+				switch (role) {
+				case "admin":
+					Role adminRole = roleRepository.findByName(Roles.ROLE_ADMIN.name())
+							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					roles.add(adminRole);
+
+					break;
+				case "mod":
+					Role modRole = roleRepository.findByName(Roles.ROLE_MODERATOR.name())
+							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					roles.add(modRole);
+
+					break;
+				default:
+					Role userRole = roleRepository.findByName(Roles.ROLE_USER.name())
+							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+					roles.add(userRole);
+				}
+			});
+		}
+         
 
 		try {
 			userservice.Adduser(signUpRequest, roles);
