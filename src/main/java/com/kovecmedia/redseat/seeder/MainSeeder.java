@@ -1,5 +1,8 @@
 package com.kovecmedia.redseat.seeder;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -42,20 +45,20 @@ public class MainSeeder implements CommandLineRunner {
 		// execute the code you want to or just call an other function that will handle
 		// that like the following
 
-//		NumberFormat formatter = new DecimalFormat("#0.00000");
-//
-//		long start = System.currentTimeMillis();
-//		countrySeeder.run();
-//		roleSeeder.run();
-//		addressSeeder.run();
-//		countactNumberSeeder.run();
-//		userSeeder.run();
-//		packageSeeder.run();
-//		invoiceSeeder.run();
-//		scheduledJobSeeder.run();
-//		messageQueueSeeder.run();
-//		long end = System.currentTimeMillis();
-//		logger.info("All  Seeder ran in " + formatter.format((end - start) / 1000d) + " seconds");
+		NumberFormat formatter = new DecimalFormat("#0.00000");
+
+		long start = System.currentTimeMillis();
+		countrySeeder.run();
+		roleSeeder.run();
+		addressSeeder.run();
+		countactNumberSeeder.run();
+		userSeeder.run();
+		packageSeeder.run();
+		invoiceSeeder.run();
+		scheduledJobSeeder.run();
+		//messageQueueSeeder.run();
+		long end = System.currentTimeMillis();
+		logger.info("All  Seeder ran in " + formatter.format((end - start) / 1000d) + " seconds");
 
 	}
 }

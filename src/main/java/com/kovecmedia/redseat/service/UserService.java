@@ -23,6 +23,6 @@ public interface UserService {
 	UserDetails loadUserByEmail(String email) throws UsernameNotFoundException;
 
 	@Transactional
-	void Adduser(UserRegistration userRegistration,Set<Role> roles) throws Exception;
+	void addUser(UserRegistration userRegistration,Set<Role> roles) throws Exception;
 
 }

@@ -8,7 +8,9 @@ import com.kovecmedia.redseat.model.Mail;
 
 public interface EmailService {
 
-	void sendWelcomeMessage(Mail mail,String template) throws MessagingException, IOException;
+	void sendWelcomeMessage(Mail mail) throws MessagingException, IOException;
+
+	void sendTemplate(Mail mail, String templateName) throws MessagingException;
 
 
 

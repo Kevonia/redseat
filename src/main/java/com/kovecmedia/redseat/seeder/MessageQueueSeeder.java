@@ -32,7 +32,7 @@ public class MessageQueueSeeder {
 			Faker faker = new Faker();
 			long start = System.currentTimeMillis();
 
-			for (int i = 1; i <= 200; i++) {
+			for (int i = 1; i <= 20; i++) {
 				MessageQueue messageQueue = new MessageQueue();
 
 				messageQueue.setEmail(faker.internet().safeEmailAddress());

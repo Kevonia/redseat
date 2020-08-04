@@ -28,8 +28,7 @@ public class ScheduledJobSeeder {
 			java.sql.Date date = new java.sql.Date(millis);
 
 			ScheduledJob scheduledJob = new ScheduledJob();
-			scheduledJob.setRundate(date);
-			scheduledJob.setStatus("successful");
+			scheduledJob.setIsActive(true);
 			scheduledJob.setTemplateName("welcome");
 			scheduledJob.setType(JobType.EMAIL);
 

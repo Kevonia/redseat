@@ -8,7 +8,5 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PackageRepository extends JpaRepository<Package, Long> {
-
-
 	List<Package> findByUserId(User user);
 }

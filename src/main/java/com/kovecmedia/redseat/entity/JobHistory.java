@@ -1,6 +1,7 @@
 package com.kovecmedia.redseat.entity;
 
 import java.sql.Date;
+import java.sql.Time;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,22 +14,30 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
 
-import com.kovecmedia.redseat.model.MessageStatus;
+import com.kovecmedia.redseat.model.JobStatus;
 
 @Entity
-@Table(name = "messagequeue")
+@Table(name = "jobhistory")
 @DynamicUpdate
-public class MessageQueue {
+public class JobHistory {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String email;
-	private String phonenumber;
-	@ManyToOne(fetch = FetchType.EAGER)
+	private JobStatus status;
+	private Date rundate;
+	private Time runtime;
+	public ScheduledJob getScheduledId() {
+		return scheduledId;
+	}
+
+	public void setScheduledId(ScheduledJob scheduledId) {
+		this.scheduledId = scheduledId;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "scheduledId")
 	private ScheduledJob scheduledId;
-	private Date rundate;
-	private MessageStatus status;
 
 	public Long getId() {
 		return id;
@@ -38,28 +47,12 @@ public class MessageQueue {
 		this.id = id;
 	}
 
-	public String getEmail() {
-		return email;
+	public JobStatus getStatus() {
+		return status;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPhonenumber() {
-		return phonenumber;
-	}
-
-	public void setPhonenumber(String phonenumber) {
-		this.phonenumber = phonenumber;
-	}
-
-	public ScheduledJob getScheduledId() {
-		return scheduledId;
-	}
-
-	public void setScheduledId(ScheduledJob scheduledId) {
-		this.scheduledId = scheduledId;
+	public void setStatus(JobStatus status) {
+		this.status = status;
 	}
 
 	public Date getRundate() {
@@ -70,12 +63,14 @@ public class MessageQueue {
 		this.rundate = rundate;
 	}
 
-	public MessageStatus getStatus() {
-		return status;
+	public Time getRuntime() {
+		return runtime;
 	}
 
-	public void setStatus(MessageStatus status) {
-		this.status = status;
+	public void setRuntime(Time runtime) {
+		this.runtime = runtime;
 	}
+	
+	
 
 }

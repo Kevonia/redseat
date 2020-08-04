@@ -110,9 +110,9 @@ public class AuthController {
          
 
 		try {
-			userservice.Adduser(signUpRequest, roles);
+			userservice.addUser(signUpRequest, roles);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+
                 
 			return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
 	
