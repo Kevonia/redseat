@@ -51,11 +51,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private MessageQueueRepository messageQueueRepository;
 
-	private Set<Address> addresslist = new HashSet<>();
 
-	private Set<ContactNumber> contactlist = new HashSet<>();
-
-	private Set<Role> rolelist = new HashSet<>();
 
 	private MessageQueue messageQueue = new MessageQueue();
 
@@ -68,26 +64,30 @@ public class UserServiceImpl implements UserService {
 		User user = new User();
 		Address address = new Address();
 		ContactNumber contactNumber = new ContactNumber();
+		Set<Address> addresslist = new HashSet<>();
 
+		Set<ContactNumber> contactlist = new HashSet<>();
+
+		Set<Role> rolelist = new HashSet<>();
 		try {
 			address.setAddressline1(userRegistration.getAddressLine1());
 			address.setAddressline2(userRegistration.getAddressLine2());
 			address.setZipcode(userRegistration.getZipCode());
 			address.setCountry(countryrepository.getOne((long) 111));
 
-			this.addresslist.add(address);
+			addresslist.add(address);
 
 			contactNumber.setIsprimary(true);
 			contactNumber.setNumber(userRegistration.getPhone());
 			contactNumber.setType(PhoneType.CELL);
 
-			this.contactlist.add(contactNumber);
+			contactlist.add(contactNumber);
 
-			this.rolelist.addAll(roles);
+			rolelist.addAll(roles);
 
-//			user.setAddress(addresslist);
-//			user.setPhone(contactlist);
-//			user.setRoles(rolelist);
+			user.setAddress(addresslist);
+			user.setPhone(contactlist);
+			user.setRoles(rolelist);
 
 			user.setPassword(userRegistration.getPassword());
 			user.setName(userRegistration.getName());
