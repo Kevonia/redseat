@@ -4,13 +4,15 @@ import java.io.IOException;
 
 import javax.mail.MessagingException;
 
-import com.kovecmedia.redseat.model.Mail;
+import com.kovecmedia.redseat.entity.User;
 
 public interface EmailService {
 
-	void sendWelcomeMessage(Mail mail) throws MessagingException, IOException;
+	void sendWelcomeMessage(User user) throws MessagingException, IOException;
 
-	void sendTemplate(Mail mail, String templateName) throws MessagingException;
+	void sendBillingInvoice(User user) throws MessagingException, IOException;
+	
+	void sendTemplate(User user, String templateName) throws MessagingException;
 
 
 

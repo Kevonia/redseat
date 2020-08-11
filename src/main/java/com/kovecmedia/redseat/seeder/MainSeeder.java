@@ -38,6 +38,9 @@ public class MainSeeder implements CommandLineRunner {
 	@Autowired
 	MessageQueueSeeder messageQueueSeeder;
 
+	@Autowired
+	BillingSeeder billingSeeder;
+	
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	@Override
@@ -56,6 +59,7 @@ public class MainSeeder implements CommandLineRunner {
 		packageSeeder.run();
 		invoiceSeeder.run();
 		scheduledJobSeeder.run();
+		billingSeeder.run();
 		//messageQueueSeeder.run();
 		long end = System.currentTimeMillis();
 		logger.info("All  Seeder ran in " + formatter.format((end - start) / 1000d) + " seconds");

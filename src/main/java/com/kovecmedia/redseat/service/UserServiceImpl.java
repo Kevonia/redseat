@@ -1,6 +1,5 @@
 package com.kovecmedia.redseat.service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +22,6 @@ import com.kovecmedia.redseat.entity.ContactNumber;
 import com.kovecmedia.redseat.entity.MessageQueue;
 import com.kovecmedia.redseat.entity.Role;
 import com.kovecmedia.redseat.entity.User;
-import com.kovecmedia.redseat.model.Mail;
 import com.kovecmedia.redseat.model.MessageStatus;
 import com.kovecmedia.redseat.model.PhoneType;
 import com.kovecmedia.redseat.payload.request.UserRegistration;
