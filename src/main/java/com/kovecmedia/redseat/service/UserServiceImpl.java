@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUser(long id) {
-		User user = userRepository.getOne(id);
+		User user = userRepository.findById(id).get();
 		return user;
 	}
 

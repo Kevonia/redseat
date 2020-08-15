@@ -1,11 +1,14 @@
 package com.kovecmedia.redseat.job;
 
+
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.mail.MessagingException;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -39,8 +42,7 @@ public class EmailSchedule {
 	@Autowired
 	private UserRepository userRepository;
 
-	//@Scheduled(fixedRate = 300000)
-	@Scheduled(fixedRate = 10000)
+	@Scheduled(initialDelay = 30000, fixedDelay = 300000) // 5 minutes
 	public void runSchedule() throws MessagingException, IOException {
 
 		long millis = System.currentTimeMillis();
@@ -51,18 +53,22 @@ public class EmailSchedule {
 		history.setRuntime(time);
 
 		history.setStatus(JobStatus.Rnuning);
-      
+
 		try {
 			jobHistoryRepository.save(history);
 			List<MessageQueue> messages = messageQueueRepository.findByStatus(MessageStatus.NOTSENT);
 			logger.info("Welcome Email Job Stated");
-			
 
-			for (MessageQueue message : messages) {	
+			for (MessageQueue message : messages) {
 				User user = userRepository.findByEmail(message.getEmail()).get();
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException ex) {
+					logger.log(Level.FATAL, ex);
+					Thread.currentThread().interrupt();
+					return;
+				}
 
-				Thread.sleep(3000);
-                  
 				emailService.sendTemplate(user, message.getScheduledId().getTemplateName());
 				message.setStatus(MessageStatus.SENT);
 				message.setRundate(date);

@@ -20,6 +20,9 @@ public class User {
 	private String name;
 
 	private String password;
+	
+	@Column(name = "isActive", insertable = false, updatable = true, columnDefinition = "bit DEFAULT true")
+	private Boolean isActive;
 
 	@Column(unique = true)
 	private String email;
@@ -136,6 +139,16 @@ public class User {
 
 	public void setUpdate_by(String update_by) {
 		Update_by = update_by;
+	}
+	
+	
+	@JsonIgnore
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 
 	public User(String name, String password, String email, Set<Role> roles, Set<ContactNumber> phone,

@@ -44,6 +44,12 @@ public class MainSeeder implements CommandLineRunner {
 	@Autowired
 	FeeSeeder feeSeeder;
 	
+	@Autowired
+	MenuSeeder menuSeeder;
+	
+	@Autowired
+	MenuItemSeeder menuItemSeeder;
+	
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	@Override
@@ -64,7 +70,9 @@ public class MainSeeder implements CommandLineRunner {
 //		scheduledJobSeeder.run();
 //		feeSeeder.run();
 //		billingSeeder.run();
-//		messageQueueSeeder.run();
+//		//messageQueueSeeder.run();
+//		menuSeeder.run();
+//		menuItemSeeder.run();
 		long end = System.currentTimeMillis();
 		logger.info("All  Seeder ran in " + formatter.format((end - start) / 1000d) + " seconds");
 

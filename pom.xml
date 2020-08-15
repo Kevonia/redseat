@@ -46,6 +46,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.10.6</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 		</dependency>
@@ -139,7 +145,7 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.6</version>
 		</dependency>
-		
+
 
 		<!-- springfox-swagger -->
 		<dependency>

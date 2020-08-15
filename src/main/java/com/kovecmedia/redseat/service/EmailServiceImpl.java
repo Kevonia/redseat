@@ -18,6 +18,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.io.FileUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -119,56 +120,61 @@ public class EmailServiceImpl implements EmailService {
 			List<Billing> invoices = billingRepository.findbyStatusandpackageId(BillingStatus.UNPAID, packageitem);
 
 			for (Billing invoice : invoices) {
-				Mail mail = new Mail();
 
-				mail.setFrom("no-reply@redseat.com");
-				mail.setMailTo(user.getEmail());
+				if (invoice.getFee().size() != 0) {
+					Mail mail = new Mail();
 
-				mail.setSubject("Sending Email with Thymeleaf HTML Template Example");
+					String itemname = user.getName() + "-" + invoice.getId();
 
-				Map<String, Object> model = new HashMap<String, Object>();
+					System.out.println(itemname);
 
-				model.put("invoice", invoice.getId());
-				model.put("today", today);
-				model.put("name", user.getName());
-				model.put("email", user.getEmail());
-				model.put("billing", invoice.getFee());
-				model.put("total", invoice.getFee().stream().mapToDouble(o -> o.getValue()).sum());
-				mail.setProps(model);
+					mail.setFrom("no-reply@redseat.com");
+					mail.setMailTo(user.getEmail());
 
-				mail.setFrom("no-reply@redseat.com");
-				mail.setMailTo(user.getEmail());
+					mail.setSubject("Sending Email with Thymeleaf HTML Template Example");
 
-				Context context = new Context();
-				context.setVariables(mail.getProps());
-				context.setVariable("image", image);
-				String html = templateEngine.process("billing", context);
+					Map<String, Object> model = new HashMap<String, Object>();
 
-				String output = generatePdfFromHtml(html, user.getName());
+					model.put("invoice", invoice.getId());
+					model.put("today", today);
+					model.put("name", user.getName());
+					model.put("email", user.getEmail());
+					model.put("billing", invoice.getFee());
+					model.put("total", invoice.getFee().stream().mapToDouble(o -> o.getValue()).sum());
+					mail.setProps(model);
 
-				helper.addAttachment("invoice.pdf", new ClassPathResource(user.getName()+".pdf"));
+					mail.setFrom("no-reply@redseat.com");
+					mail.setMailTo(user.getEmail());
 
-				helper.setTo(mail.getMailTo());
-				helper.setText(html, true);
-				helper.setSubject(mail.getSubject());
-				helper.setFrom(mail.getFrom());
-				
-				emailSender.send(message);
-				
-//				 Files.move 
-//					        (Paths.get(this.getClass().getResource("/").getFile() + user.getName()+".pdf"),  
-//					        Paths.get(this.getClass().getResource("/").getFile()+File.separator +"achieve"+File.separator+ user.getName()+".pdf")); 
+					Context context = new Context();
+					context.setVariables(mail.getProps());
+					context.setVariable("image", image);
 
+					String html = templateEngine.process("billing", context);
+
+					String output = generatePdfFromHtml(html, itemname);
+
+					helper.addAttachment("invoice.pdf", new ClassPathResource(itemname + ".pdf"));
+
+					helper.setTo(mail.getMailTo());
+					helper.setText(html, true);
+					helper.setSubject(mail.getSubject());
+					helper.setFrom(mail.getFrom());
+
+					emailSender.send(message);
+					achivefile(itemname);
+					
+				}
 			}
 
 		}
 
 	}
 
-	public String generatePdfFromHtml(String html, String name) throws IOException, DocumentException {
-		String outputFolder = this.getClass().getResource("/").getFile() + name+".pdf";
+	private String generatePdfFromHtml(String html, String name) throws IOException, DocumentException {
+		String outputFolder = this.getClass().getResource("/").getFile() + name + ".pdf";
 		OutputStream outputStream = new FileOutputStream(outputFolder);
-   
+
 		ITextRenderer renderer = new ITextRenderer();
 		renderer.setDocumentFromString(html);
 		renderer.layout();
@@ -177,6 +183,25 @@ public class EmailServiceImpl implements EmailService {
 		outputStream.close();
 
 		return outputFolder;
+	}
+
+	private void achivefile(String name) throws IOException {
+		DateTime date = DateTime.now();
+		String month = date.toString("MMM");
+		String srcDirectoryName = this.getClass().getResource("/").getFile();
+		String achieveDirectoryName = this.getClass().getResource("/").getFile() + File.separator + "achieve"
+				+ File.separator + month + File.separator;
+
+		Path sourceFilePath = Paths.get(srcDirectoryName + name + ".pdf");
+		Path targetFilePath = Paths.get(achieveDirectoryName + name + ".pdf");
+
+		if (!Files.exists(Paths.get(achieveDirectoryName))) {
+			Files.createDirectories(Paths.get(achieveDirectoryName));
+
+		}
+		Files.deleteIfExists(targetFilePath);
+		Files.move(sourceFilePath, targetFilePath);
+
 	}
 
 	private MimeMessageHelper getEmailHelper(MimeMessage message) throws MessagingException {
