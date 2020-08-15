@@ -3,6 +3,7 @@ package com.kovecmedia.redseat.seeder;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,10 +13,11 @@ import org.springframework.stereotype.Component;
 
 import com.github.javafaker.Faker;
 import com.kovecmedia.redseat.doa.BillingRepository;
+import com.kovecmedia.redseat.doa.FeesRepository;
 import com.kovecmedia.redseat.doa.PackageRepository;
 import com.kovecmedia.redseat.entity.Billing;
+import com.kovecmedia.redseat.entity.Fee;
 import com.kovecmedia.redseat.model.BillingStatus;
-import com.kovecmedia.redseat.model.FeeType;
 @Component
 public class BillingSeeder {
 
@@ -28,6 +30,8 @@ public class BillingSeeder {
 	@Autowired
 	private PackageRepository packageRepository;
 
+	@Autowired
+	private FeesRepository feesRepository;
 
 	public void run() {
 		try {
@@ -41,13 +45,15 @@ public class BillingSeeder {
 				long millis = System.currentTimeMillis();
 				java.sql.Date date = new java.sql.Date(millis);
 				Optional<com.kovecmedia.redseat.entity.Package> value = packageRepository.findById((long) i);
-				
+			    HashSet<Fee> billingfees=new HashSet();   //billingfess
+			    
+			    billingfees.addAll(feesRepository.findAll());
 				if(value.isPresent()) {
 					billing.setDescription(faker.esports().game());
 					billing.setStatus(BillingStatus.getRandomBillingStatus());
 					billing.setPackageId(value.get());
 					billing.setValue(faker.number().randomDouble(2, 100, 10000));
-					billing.setType(FeeType.getRandomFeeType());
+					billing.setFee(billingfees);
 					billing.setUpdated(date);
 					list.add(billing);
 				}

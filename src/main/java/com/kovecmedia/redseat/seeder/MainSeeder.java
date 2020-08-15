@@ -41,6 +41,9 @@ public class MainSeeder implements CommandLineRunner {
 	@Autowired
 	BillingSeeder billingSeeder;
 	
+	@Autowired
+	FeeSeeder feeSeeder;
+	
 	private Logger logger = Logger.getLogger(this.getClass());
 
 	@Override
@@ -51,16 +54,17 @@ public class MainSeeder implements CommandLineRunner {
 		NumberFormat formatter = new DecimalFormat("#0.00000");
 
 		long start = System.currentTimeMillis();
-		countrySeeder.run();
-		roleSeeder.run();
-		addressSeeder.run();
-		countactNumberSeeder.run();
-		userSeeder.run();
-		packageSeeder.run();
-		invoiceSeeder.run();
-		scheduledJobSeeder.run();
-		billingSeeder.run();
-		//messageQueueSeeder.run();
+//		countrySeeder.run();
+//		roleSeeder.run();
+//		addressSeeder.run();
+//		countactNumberSeeder.run();
+//		userSeeder.run();
+//		packageSeeder.run();
+//		invoiceSeeder.run();
+//		scheduledJobSeeder.run();
+//		feeSeeder.run();
+//		billingSeeder.run();
+//		messageQueueSeeder.run();
 		long end = System.currentTimeMillis();
 		logger.info("All  Seeder ran in " + formatter.format((end - start) / 1000d) + " seconds");
 

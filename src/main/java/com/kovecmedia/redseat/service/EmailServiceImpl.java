@@ -1,7 +1,15 @@
 package com.kovecmedia.redseat.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,25 +17,37 @@ import java.util.Map;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import com.kovecmedia.redseat.doa.BillingRepository;
 import com.kovecmedia.redseat.doa.PackageRepository;
+import com.kovecmedia.redseat.entity.Billing;
+import com.kovecmedia.redseat.entity.Package;
 import com.kovecmedia.redseat.entity.User;
+import com.kovecmedia.redseat.model.BillingStatus;
 import com.kovecmedia.redseat.model.Mail;
 import com.kovecmedia.redseat.model.PackageLocation;
+import com.lowagie.text.DocumentException;
 
 @Service
 public class EmailServiceImpl implements EmailService {
 
 	@Autowired
 	private JavaMailSender emailSender;
-	
+
 	@Autowired
 	private PackageRepository packageRepository;
+
+	@Autowired
+	private BillingRepository billingRepository;
+
 	@Autowired
 	private org.thymeleaf.spring5.SpringTemplateEngine templateEngine;
 
@@ -35,7 +55,6 @@ public class EmailServiceImpl implements EmailService {
 	public void sendWelcomeMessage(User user) throws MessagingException, IOException {
 		MimeMessage message = emailSender.createMimeMessage();
 		MimeMessageHelper helper = getEmailHelper(message);
-//		helper.addAttachment("logo.png", new ClassPathResource("logo.png"));
 
 		Mail mail = new Mail();
 
@@ -68,58 +87,96 @@ public class EmailServiceImpl implements EmailService {
 	}
 
 	@Override
-	public void sendTemplate(User user, String templateName) throws MessagingException {
+	public void sendTemplate(User user, String templateName) throws MessagingException, IOException, DocumentException {
 
 		if (templateName.equals("welcome")) {
-			try {
-				sendWelcomeMessage(user);
-			} catch (MessagingException e) {
 
-				e.printStackTrace();
-			} catch (IOException e) {
+			sendWelcomeMessage(user);
 
-				e.printStackTrace();
-			}
+		} else if (templateName.equals("billing")) {
+			sendBillingInvoice(user);
 		}
 
 	}
 
 	@Override
-	public void sendBillingInvoice(User user) throws MessagingException, IOException {
+	public void sendBillingInvoice(User user) throws MessagingException, IOException, DocumentException {
 		MimeMessage message = emailSender.createMimeMessage();
 		MimeMessageHelper helper = getEmailHelper(message);
-		
-		List<com.kovecmedia.redseat.entity.Package> packagelist =packageRepository.findByUserIdandLocation(user, PackageLocation.WAREHOUSE);
-		
 
-		Mail mail = new Mail();
+		List<com.kovecmedia.redseat.entity.Package> packagelist = packageRepository.findByUserIdandLocation(user,
+				PackageLocation.WAREHOUSE);
 
-		mail.setFrom("no-reply@redseat.com");
-		mail.setMailTo(user.getEmail());
+		byte[] fileContent = FileUtils
+				.readFileToByteArray(new File(System.getProperty("user.home") + File.separator + "logo.png"));
+		String encodedString = Base64.getEncoder().encodeToString(fileContent);
 
-		mail.setSubject("Sending Email with Thymeleaf HTML Template Example");
+		String image = "data:image/png;base64," + encodedString;
 
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("name", user.getName());
-		model.put("logo", "https://seeklogo.com/images/T/Test-logo-37F8EF5B80-seeklogo.com.png");
-		model.put("signature", "http://memorynotfound.com");
-		mail.setProps(model);
+		java.util.Date today = Calendar.getInstance().getTime();
+		for (Package packageitem : packagelist) {
 
-		mail.setFrom("no-reply@redseat.com");
-		mail.setMailTo(user.getEmail());
+			List<Billing> invoices = billingRepository.findbyStatusandpackageId(BillingStatus.UNPAID, packageitem);
 
-		Context context = new Context();
-		context.setVariables(mail.getProps());
+			for (Billing invoice : invoices) {
+				Mail mail = new Mail();
 
-		String html = templateEngine.process("welcome", context);
+				mail.setFrom("no-reply@redseat.com");
+				mail.setMailTo(user.getEmail());
 
-		helper.setTo(mail.getMailTo());
-		helper.setText(html, true);
-		helper.setSubject(mail.getSubject());
-		helper.setFrom(mail.getFrom());
+				mail.setSubject("Sending Email with Thymeleaf HTML Template Example");
 
-		emailSender.send(message);
+				Map<String, Object> model = new HashMap<String, Object>();
 
+				model.put("invoice", invoice.getId());
+				model.put("today", today);
+				model.put("name", user.getName());
+				model.put("email", user.getEmail());
+				model.put("billing", invoice.getFee());
+				model.put("total", invoice.getFee().stream().mapToDouble(o -> o.getValue()).sum());
+				mail.setProps(model);
+
+				mail.setFrom("no-reply@redseat.com");
+				mail.setMailTo(user.getEmail());
+
+				Context context = new Context();
+				context.setVariables(mail.getProps());
+				context.setVariable("image", image);
+				String html = templateEngine.process("billing", context);
+
+				String output = generatePdfFromHtml(html, user.getName());
+
+				helper.addAttachment("invoice.pdf", new ClassPathResource(user.getName()+".pdf"));
+
+				helper.setTo(mail.getMailTo());
+				helper.setText(html, true);
+				helper.setSubject(mail.getSubject());
+				helper.setFrom(mail.getFrom());
+				
+				emailSender.send(message);
+				
+//				 Files.move 
+//					        (Paths.get(this.getClass().getResource("/").getFile() + user.getName()+".pdf"),  
+//					        Paths.get(this.getClass().getResource("/").getFile()+File.separator +"achieve"+File.separator+ user.getName()+".pdf")); 
+
+			}
+
+		}
+
+	}
+
+	public String generatePdfFromHtml(String html, String name) throws IOException, DocumentException {
+		String outputFolder = this.getClass().getResource("/").getFile() + name+".pdf";
+		OutputStream outputStream = new FileOutputStream(outputFolder);
+   
+		ITextRenderer renderer = new ITextRenderer();
+		renderer.setDocumentFromString(html);
+		renderer.layout();
+		renderer.createPDF(outputStream);
+
+		outputStream.close();
+
+		return outputFolder;
 	}
 
 	private MimeMessageHelper getEmailHelper(MimeMessage message) throws MessagingException {

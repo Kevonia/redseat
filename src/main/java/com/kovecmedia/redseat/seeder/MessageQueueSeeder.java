@@ -32,14 +32,14 @@ public class MessageQueueSeeder {
 			Faker faker = new Faker();
 			long start = System.currentTimeMillis();
 
-			for (int i = 1; i <= 20; i++) {
+			for (int i = 1; i <= 5; i++) {
 				MessageQueue messageQueue = new MessageQueue();
 
 				messageQueue.setEmail(faker.internet().safeEmailAddress());
 				messageQueue.setPhonenumber("");
 				messageQueue.setRundate(null);
 				messageQueue.setStatus(MessageStatus.NOTSENT);
-				messageQueue.setScheduledId(scheduledJobRepository.getOne((long) 1));
+				messageQueue.setScheduledId(scheduledJobRepository.getOne((long) 2));
 				list.add(messageQueue);
 			}
 
