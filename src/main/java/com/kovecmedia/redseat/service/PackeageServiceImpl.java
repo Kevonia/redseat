@@ -17,7 +17,7 @@ public class PackeageServiceImpl implements PackegeService {
 	InvoiceRepository  invoiceRepository;
 	@Override
 	public PackageInvoice getPacketByid(long id) {
-		// TODO Auto-generated method stub
+
 		PackageInvoice packageInvoice = new PackageInvoice();
 		Package package1 =packageRepository.getOne(id);
 		

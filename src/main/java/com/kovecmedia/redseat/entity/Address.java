@@ -1,18 +1,17 @@
 package com.kovecmedia.redseat.entity;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.kovecmedia.redseat.model.AddressStatus;
 
@@ -43,6 +42,9 @@ public class Address {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "country_id")
 	private Country country;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	private Set<User> users;
 
 	@Column(length = 8)
 	private AddressStatus type;
@@ -118,6 +120,16 @@ public class Address {
 	public void setUpdate_by(String update_by) {
 		Update_by = update_by;
 	}
+	
+	
+
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}
 
 	@Override
 	public String toString() {
@@ -126,6 +138,4 @@ public class Address {
 				+ ", country=" + country + ", type=" + type + "]";
 	}
 
-	
-	
 }

@@ -30,7 +30,7 @@ public class User {
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<Role> roles;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY)
 	private Set<ContactNumber> phone;
 
 	@ManyToMany(fetch = FetchType.LAZY)

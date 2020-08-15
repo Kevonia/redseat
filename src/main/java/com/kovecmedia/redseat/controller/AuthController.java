@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kovecmedia.redseat.doa.RoleRepository;
 import com.kovecmedia.redseat.doa.UserRepository;
 import com.kovecmedia.redseat.entity.Role;
-import com.kovecmedia.redseat.entity.User;
 import com.kovecmedia.redseat.jwt.JwtUtils;
 import com.kovecmedia.redseat.model.Roles;
 import com.kovecmedia.redseat.payload.request.LoginRequest;
@@ -51,10 +50,9 @@ public class AuthController {
 
 	@Autowired
 	JwtUtils jwtUtils;
-	
+
 	@Autowired
 	UserService userservice;
-
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -80,40 +78,45 @@ public class AuthController {
 			return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
 		}
 
-
-
 		Set<String> strRoles = signUpRequest.getRole();
-		Set<Role> roles = new HashSet<>();
+		Set<Role> roles = new HashSet<Role>();
 
 		if (strRoles == null) {
-			Role userRole = roleRepository.findByName(Roles.ROLE_USER)
+			Role userRole = roleRepository.findByName(Roles.ROLE_USER.name())
 					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 			roles.add(userRole);
 		} else {
 			strRoles.forEach(role -> {
 				switch (role) {
 				case "admin":
-					Role adminRole = roleRepository.findByName(Roles.ROLE_ADMIN)
+					Role adminRole = roleRepository.findByName(Roles.ROLE_ADMIN.name())
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 					roles.add(adminRole);
 
 					break;
 				case "mod":
-					Role modRole = roleRepository.findByName(Roles.ROLE_MODERATOR)
+					Role modRole = roleRepository.findByName(Roles.ROLE_MODERATOR.name())
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 					roles.add(modRole);
 
 					break;
 				default:
-					Role userRole = roleRepository.findByName(Roles.ROLE_USER)
+					Role userRole = roleRepository.findByName(Roles.ROLE_USER.name())
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 					roles.add(userRole);
 				}
 			});
 		}
+         
 
+		try {
+			userservice.addUser(signUpRequest, roles);
+		} catch (Exception e) {
 
-		userservice.Adduser(signUpRequest);
+                
+			return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+	
+		}
 
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 	}

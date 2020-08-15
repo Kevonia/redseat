@@ -4,12 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -18,13 +13,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kovecmedia.redseat.doa.AddressRepository;
 import com.kovecmedia.redseat.doa.ContactNumberRepository;
 import com.kovecmedia.redseat.doa.CountryRepository;
+import com.kovecmedia.redseat.doa.MessageQueueRepository;
 import com.kovecmedia.redseat.doa.PackageRepository;
-import com.kovecmedia.redseat.doa.RoleRepository;
+import com.kovecmedia.redseat.doa.ScheduledJobRepository;
 import com.kovecmedia.redseat.doa.UserRepository;
 import com.kovecmedia.redseat.entity.Address;
 import com.kovecmedia.redseat.entity.ContactNumber;
+import com.kovecmedia.redseat.entity.MessageQueue;
 import com.kovecmedia.redseat.entity.Role;
 import com.kovecmedia.redseat.entity.User;
+import com.kovecmedia.redseat.model.MessageStatus;
 import com.kovecmedia.redseat.model.PhoneType;
 import com.kovecmedia.redseat.payload.request.UserRegistration;
 import com.kovecmedia.redseat.payload.respond.UserPackages;
@@ -40,102 +38,84 @@ public class UserServiceImpl implements UserService {
 	private AddressRepository addressRepository;
 
 	@Autowired
-	private RoleRepository roleRepository;
-
-	@Autowired
 	private ContactNumberRepository contactnumberepository;
 
 	@Autowired
 	private CountryRepository countryrepository;
 
 	@Autowired
-	private JavaMailSender javaMailSender;
-
-	@Autowired
 	private PackageRepository packageRepository;
 
-	private User user = new User();
+	@Autowired
+	private MessageQueueRepository messageQueueRepository;
 
-	private Address address = new Address();
 
-	private ContactNumber contactNumber = new ContactNumber();
 
-	private Set<Address> addresslist = new HashSet<Address>();
+	private MessageQueue messageQueue = new MessageQueue();
 
-	private Set<ContactNumber> contactlist = new HashSet<ContactNumber>();
+	@Autowired
+	private ScheduledJobRepository scheduledJobRepository;
 
-	private Set<Role> rolelist = new HashSet<Role>();
-
-	@Transactional
 	@Override
-	public void Adduser(UserRegistration userRegistration) {
-		// TODO Auto-generated method stub
+	@Transactional
+	public void addUser(UserRegistration userRegistration, Set<Role> roles) throws Exception {
+		User user = new User();
+		Address address = new Address();
+		ContactNumber contactNumber = new ContactNumber();
+		Set<Address> addresslist = new HashSet<>();
 
+		Set<ContactNumber> contactlist = new HashSet<>();
+
+		Set<Role> rolelist = new HashSet<>();
 		try {
-			this.address.setAddressline1(userRegistration.getAddressline1());
-			this.address.setAddressline2(userRegistration.getAddressline2());
-			this.address.setZipcode(userRegistration.getZipCode());
-			this.address.setCountry(countryrepository.getOne((long) 111));
+			address.setAddressline1(userRegistration.getAddressLine1());
+			address.setAddressline2(userRegistration.getAddressLine2());
+			address.setZipcode(userRegistration.getZipCode());
+			address.setCountry(countryrepository.getOne((long) 111));
 
-			this.addresslist.add(address);
+			addresslist.add(address);
 
-			this.contactNumber.setIsprimary(true);
-			this.contactNumber.setNumber(userRegistration.getPhone());
-			this.contactNumber.setType(PhoneType.CELL);
+			contactNumber.setIsprimary(true);
+			contactNumber.setNumber(userRegistration.getPhone());
+			contactNumber.setType(PhoneType.CELL);
 
-			this.contactlist.add(contactNumber);
+			contactlist.add(contactNumber);
 
-			this.rolelist.add(roleRepository.getOne((long) 1));
+			rolelist.addAll(roles);
 
-			this.user.setAddress(addresslist);
-			this.user.setPhone(contactlist);
-			this.user.setRoles(rolelist);
+			user.setAddress(addresslist);
+			user.setPhone(contactlist);
+			user.setRoles(rolelist);
 
-			this.user.setPassword(userRegistration.getPassword());
-			this.user.setName(userRegistration.getName());
-			this.user.setEmail(userRegistration.getEmail());
-			this.addressRepository.save(address);
-			this.contactnumberepository.save(contactNumber);
-			this.userRepository.save(user);
+			user.setPassword(userRegistration.getPassword());
+			user.setName(userRegistration.getName());
+			user.setEmail(userRegistration.getEmail());
+			addressRepository.save(address);
+			contactnumberepository.save(contactNumber);
 
-			SednHtmlEmail();
+			userRepository.save(user);
+
+			messageQueue.setStatus(MessageStatus.NOTSENT);
+			messageQueue.setScheduledId(scheduledJobRepository.getOne((long) 1));
+			messageQueue.setEmail(userRegistration.getEmail());
+			messageQueueRepository.save(messageQueue);
+
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new Exception("Oops, Something Went Wrong");
 
 		}
 	}
 
 	@Override
 	public User getUser(long id) {
-		this.user = userRepository.getOne(id);
+		User user = userRepository.getOne(id);
 		return user;
 	}
 
 	@Override
 	public List<User> getAllUsers() {
-		// TODO Auto-generated method stub
 		return userRepository.findAll();
-	}
-
-	void SednHtmlEmail() throws MessagingException {
-
-		MimeMessage msg = javaMailSender.createMimeMessage();
-
-		// true = multipart message
-		MimeMessageHelper helper = new MimeMessageHelper(msg, true);
-
-		helper.setTo("Kevonia123@gmail.com");
-
-		helper.setFrom("Kevonia123@gmail.com");
-
-		helper.setSubject("Testing from Spring Boot");
-
-		// true = text/html
-		helper.setText("<h1 style=color:red >Welcome to Redseat </h1>", true);
-
-		javaMailSender.send(msg);
-
 	}
 
 	@Override
@@ -147,7 +127,6 @@ public class UserServiceImpl implements UserService {
 		userPackages.setId(id);
 		userPackages.setName(tempuser.getName());
 		userPackages.setPacklist(packageRepository.findByUserId(userRepository.getOne((long) 3)));
-		// TODO Auto-generated method stub
 
 		return userPackages;
 	}
@@ -160,6 +139,5 @@ public class UserServiceImpl implements UserService {
 
 		return UserDetailsImpl.build(user);
 	}
-
 
 }
