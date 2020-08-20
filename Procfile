@@ -1,2 +1,1 @@
-buildpacks:clear
-war:deploy target/redseat.war
+web: java -jar target/*.war
