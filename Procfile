@@ -1,2 +1,1 @@
-web:sh target/bin/webapp
-
+heroku ps:scale web=1
