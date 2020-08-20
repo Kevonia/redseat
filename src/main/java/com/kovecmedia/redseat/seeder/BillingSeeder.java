@@ -45,7 +45,7 @@ public class BillingSeeder {
 				long millis = System.currentTimeMillis();
 				java.sql.Date date = new java.sql.Date(millis);
 				Optional<com.kovecmedia.redseat.entity.Package> value = packageRepository.findById((long) i);
-			    HashSet<Fee> billingfees=new HashSet();   //billingfess
+			    HashSet<Fee> billingfees=new HashSet();   
 			    
 			    billingfees.addAll(feesRepository.findAll());
 				if(value.isPresent()) {
