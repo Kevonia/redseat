@@ -7,7 +7,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -31,6 +33,10 @@ public class Role {
 	private java.sql.Timestamp Update_at;
 	
 	private String Update_by;
+	
+	@OneToOne()
+    @JoinColumn(name = "menuId", referencedColumnName = "id")
+    private Menu menuId;
 
     public Long getId() {
         return id;
@@ -78,6 +84,14 @@ public class Role {
 
 	public void setUpdate_by(String update_by) {
 		Update_by = update_by;
+	}
+
+	public Menu getMenuId() {
+		return menuId;
+	}
+
+	public void setMenuId(Menu menuId) {
+		this.menuId = menuId;
 	}
     
     

@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUser(long id) {
-		User user = userRepository.getOne(id);
+		User user = userRepository.findById(id).get();
 		return user;
 	}
 
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
 		UserPackages userPackages = new UserPackages();
 		userPackages.setId(id);
 		userPackages.setName(tempuser.getName());
-		userPackages.setPacklist(packageRepository.findByUserId(userRepository.getOne((long) 3)));
+		userPackages.setPacklist(packageRepository.findByUserId(userRepository.getOne((long) id)));
 
 		return userPackages;
 	}
