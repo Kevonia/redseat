@@ -25,7 +25,7 @@ public class UserPackageController {
 
 
 	@GetMapping(value = "/{id}", produces = "application/json")
-	@CrossOrigin(origins = "http://localhost:8080")
+	@CrossOrigin(origins = "*",allowedHeaders="*")
 	public UserPackages getbyId(@PathVariable long id) {
 		UserPackages userPackages = new UserPackages();
 		userPackages = userservice.getUserPaakages(id);
