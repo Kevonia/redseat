@@ -36,17 +36,20 @@ public class MenuItemSeeder {
 
 			menuItems.setName("home");
 			menuItems.setParentId(0);
+			menuItems.setIcon("fas fa-tachometer-alt");
 			menuItems.setPath("/home");
 			menuItems.setMenu(menuRepository.getOne((long) 1));
 			
 			menuItems1.setName("home");
 			menuItems1.setParentId(0);
+			menuItems1.setIcon("fas fa-tachometer-alt");
 			menuItems1.setPath("/staff/home");
 			menuItems1.setMenu(menuRepository.getOne((long) 3));
 			
 			
 			menuItems2.setName("home");
 			menuItems2.setParentId(0);
+			menuItems2.setIcon("fas fa-tachometer-alt");
 			menuItems2.setPath("/admin/home");
 			menuItems2.setMenu(menuRepository.getOne((long) 2));
 			

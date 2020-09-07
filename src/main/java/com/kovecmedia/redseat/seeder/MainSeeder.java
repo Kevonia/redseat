@@ -70,7 +70,7 @@ public class MainSeeder implements CommandLineRunner {
 //		scheduledJobSeeder.run();
 //		feeSeeder.run();
 //		billingSeeder.run();
-//		//messageQueueSeeder.run();
+		//messageQueueSeeder.run();
 //		menuSeeder.run();
 //		menuItemSeeder.run();
 		long end = System.currentTimeMillis();

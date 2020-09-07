@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kovecmedia.redseat.payload.respond.PackageInvoice;
 import com.kovecmedia.redseat.service.PackegeService;
-import com.kovecmedia.redseat.model.PackageInvoice;
 
 @RestController
 @RequestMapping("package")

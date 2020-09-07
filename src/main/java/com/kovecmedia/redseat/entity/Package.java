@@ -38,7 +38,7 @@ public class Package {
 
 	private PackageLocation location;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "userId")
 	private User userId;
 

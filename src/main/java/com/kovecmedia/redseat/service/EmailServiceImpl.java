@@ -62,12 +62,12 @@ public class EmailServiceImpl implements EmailService {
 		mail.setFrom("no-reply@redseat.com");
 		mail.setMailTo(user.getEmail());
 
-		mail.setSubject("Sending Email with Thymeleaf HTML Template Example");
+		mail.setSubject("Welcome to RedSeat");
 
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("name", user.getName());
-		model.put("logo", "https://seeklogo.com/images/T/Test-logo-37F8EF5B80-seeklogo.com.png");
-		model.put("signature", "http://memorynotfound.com");
+		model.put("logo", "https://redseatcourier.com/assets/img/rscja-logo.png");
+		model.put("id",  user.getId());
 		mail.setProps(model);
 
 		mail.setFrom("no-reply@redseat.com");

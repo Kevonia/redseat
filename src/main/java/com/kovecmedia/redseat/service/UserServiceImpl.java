@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
 			address.setAddressline1(userRegistration.getAddressLine1());
 			address.setAddressline2(userRegistration.getAddressLine2());
 			address.setZipcode(userRegistration.getZipCode());
-			address.setCountry(countryrepository.getOne((long) 111));
+			address.setCountry(countryrepository.getOne((long) 1));
 
 			addresslist.add(address);
 
@@ -138,6 +138,12 @@ public class UserServiceImpl implements UserService {
 				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + email));
 
 		return UserDetailsImpl.build(user);
+	}
+
+	@Override
+	public Boolean existsByEmail(String email) {
+		// TODO Auto-generated method stub
+		return userRepository.existsByEmail(email);
 	}
 
 }

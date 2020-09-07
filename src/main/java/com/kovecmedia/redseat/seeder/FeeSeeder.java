@@ -29,7 +29,7 @@ public class FeeSeeder {
 			Faker faker = new Faker();
 			long start = System.currentTimeMillis();
 
-			for (int i = 1; i <= 20; i++) {
+			for (int i = 1; i <= 10; i++) {
 				Fee fee = new Fee();
 				fee.setName(faker.name().name());
 				fee.setValue(faker.number().randomNumber());

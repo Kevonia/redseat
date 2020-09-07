@@ -22,6 +22,8 @@ public interface UserService {
 
 	UserDetails loadUserByEmail(String email) throws UsernameNotFoundException;
 
+	Boolean existsByEmail(String email);
+	
 	@Transactional
 	void addUser(UserRegistration userRegistration,Set<Role> roles) throws Exception;
 

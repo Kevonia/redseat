@@ -23,9 +23,8 @@ public class UserPackageController {
 	@Autowired
 	UserService userservice;
 
-
+	
 	@GetMapping(value = "/{id}", produces = "application/json")
-	@CrossOrigin(origins = "*",allowedHeaders="*")
 	public UserPackages getbyId(@PathVariable long id) {
 		UserPackages userPackages = new UserPackages();
 		userPackages = userservice.getUserPaakages(id);

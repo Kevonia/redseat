@@ -1,15 +1,17 @@
 package com.kovecmedia.redseat.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "menuitems")
@@ -22,7 +24,9 @@ public class MenuItems {
 	private Long id;
 	private String name;
 	private String path;
-	@ManyToOne(fetch = FetchType.LAZY)
+	private String icon;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "menuId")
 	private Menu menu;
     
     private int parentId;
@@ -50,7 +54,7 @@ public class MenuItems {
 	public void setPath(String path) {
 		this.path = path;
 	}
-
+	@JsonIgnore 
 	public Menu getMenu() {
 		return menu;
 	}
@@ -65,6 +69,16 @@ public class MenuItems {
 
 	public void setParentId(int parentId) {
 		this.parentId = parentId;
+	}
+	
+	
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
 	public MenuItems() {

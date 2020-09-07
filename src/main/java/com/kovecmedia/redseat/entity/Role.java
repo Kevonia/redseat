@@ -34,8 +34,8 @@ public class Role {
 	
 	private String Update_by;
 	
-	@OneToOne()
-    @JoinColumn(name = "menuId", referencedColumnName = "id")
+	@OneToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name = "menuId")
     private Menu menuId;
 
     public Long getId() {

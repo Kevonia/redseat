@@ -43,7 +43,7 @@ public class UserSeeder {
 			NumberFormat formatter = new DecimalFormat("#0.00000");
 			
 			long start = System.currentTimeMillis();
-			for (int i = 1; i <= 200; i++) {
+			for (int i = 1; i <= 10; i++) {
 				User user = new User();
 				Random rand = new Random();
 				Set<Address> addresslist = new HashSet<Address>();

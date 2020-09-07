@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kovecmedia.redseat.entity.User;
 import com.kovecmedia.redseat.service.UserService;
 
+
 @RestController
 @RequestMapping("user")
 public class UserController {
@@ -18,12 +19,15 @@ public class UserController {
 
 	@GetMapping(value = "/{id}", produces = "application/json")
 	public User getbyId(@PathVariable long id) {
-
 		User user = new User();
-
 		user = userservice.getUser(id);
-
 		return user;
+	}
+	
+	@GetMapping(value = "checkuser/{email}/",produces = "application/json" )
+	public Boolean existsByEmail(@PathVariable String email) {
+		   
+		 return userservice.existsByEmail(email);
 	}
 
 

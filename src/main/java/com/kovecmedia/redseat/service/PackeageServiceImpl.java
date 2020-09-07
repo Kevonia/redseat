@@ -3,10 +3,12 @@ package com.kovecmedia.redseat.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kovecmedia.redseat.doa.BillingRepository;
 import com.kovecmedia.redseat.doa.InvoiceRepository;
 import com.kovecmedia.redseat.doa.PackageRepository;
+import com.kovecmedia.redseat.entity.Billing;
 import com.kovecmedia.redseat.entity.Package;
-import com.kovecmedia.redseat.model.PackageInvoice;
+import com.kovecmedia.redseat.payload.respond.PackageInvoice;
 
 @Service
 public class PackeageServiceImpl implements PackegeService {
@@ -15,14 +17,19 @@ public class PackeageServiceImpl implements PackegeService {
 	PackageRepository packageRepository;
 	@Autowired
 	InvoiceRepository  invoiceRepository;
+	
+	@Autowired
+	BillingRepository  billingRepository;
+	
 	@Override
 	public PackageInvoice getPacketByid(long id) {
 
 		PackageInvoice packageInvoice = new PackageInvoice();
-		Package package1 =packageRepository.getOne(id);
+		Package package1 =packageRepository.findById(id).orElse(null);
 		
-		packageInvoice.setPackeage(package1);
+		packageInvoice.setPackageItem(package1);
 		packageInvoice.setInvoices(invoiceRepository.findByPackageId(package1));
+		packageInvoice.setBilling(billingRepository.findBypackageId(package1));
 		return  packageInvoice;
 	}
 
