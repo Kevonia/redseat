@@ -16,6 +16,9 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(columnDefinition = "BIG INT DEFAULT 0")
+	private Long points;
 
 	private String name;
 
@@ -142,6 +145,14 @@ public class User {
 	}
 	
 	
+	public Long getPoints() {
+		return points;
+	}
+
+	public void setPoints(Long points) {
+		this.points = points;
+	}
+
 	@JsonIgnore
 	public Boolean getIsActive() {
 		return isActive;

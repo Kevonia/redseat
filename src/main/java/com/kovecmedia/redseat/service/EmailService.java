@@ -13,6 +13,8 @@ public interface EmailService {
 
 	void sendBillingInvoice(User user) throws MessagingException, IOException, DocumentException;
 	
+	void sendResetPassword(User user) throws MessagingException, IOException, DocumentException;
+	
 	void sendTemplate(User user, String templateName) throws MessagingException, IOException, DocumentException;
 
 

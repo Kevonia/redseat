@@ -24,7 +24,7 @@ public class UserController {
 		return user;
 	}
 	
-	@GetMapping(value = "checkuser/{email}/",produces = "application/json" )
+	@GetMapping(value = "/checkuser/{email}/",produces = "application/json" )
 	public Boolean existsByEmail(@PathVariable String email) {
 		   
 		 return userservice.existsByEmail(email);

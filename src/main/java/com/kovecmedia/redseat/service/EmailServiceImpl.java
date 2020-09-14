@@ -28,8 +28,10 @@ import org.thymeleaf.context.Context;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import com.kovecmedia.redseat.doa.BillingRepository;
+import com.kovecmedia.redseat.doa.ForgetPasswordRepository;
 import com.kovecmedia.redseat.doa.PackageRepository;
 import com.kovecmedia.redseat.entity.Billing;
+import com.kovecmedia.redseat.entity.ForgetPassword;
 import com.kovecmedia.redseat.entity.Package;
 import com.kovecmedia.redseat.entity.User;
 import com.kovecmedia.redseat.model.BillingStatus;
@@ -48,6 +50,9 @@ public class EmailServiceImpl implements EmailService {
 
 	@Autowired
 	private BillingRepository billingRepository;
+	
+	@Autowired
+	private ForgetPasswordRepository forgetPasswordRepository;
 
 	@Autowired
 	private org.thymeleaf.spring5.SpringTemplateEngine templateEngine;
@@ -96,6 +101,9 @@ public class EmailServiceImpl implements EmailService {
 
 		} else if (templateName.equals("billing")) {
 			sendBillingInvoice(user);
+		}
+		else if(templateName.equals("resetpassword")){
+			sendResetPassword(user);
 		}
 
 	}
@@ -211,6 +219,46 @@ public class EmailServiceImpl implements EmailService {
 
 		return helper;
 
+	}
+
+	@Override
+	public void sendResetPassword(User user) throws MessagingException, IOException, DocumentException {
+		// TODO Auto-generated method stub
+		MimeMessage message = emailSender.createMimeMessage();
+		MimeMessageHelper helper = getEmailHelper(message);
+		
+		ForgetPassword forgetPassword = forgetPasswordRepository.findByUsedAndUser(false, user);
+		
+		
+
+		Mail mail = new Mail();
+
+		mail.setFrom("no-reply@redseat.com");
+		mail.setMailTo(forgetPassword.getUser().getEmail());
+
+		mail.setSubject("FORGOT YOUR PASSWORD?");
+
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("name", forgetPassword.getUser().getName());
+		model.put("token", "http://localhost:8080/reset/"+forgetPassword.getToken());
+
+		mail.setProps(model);
+
+		mail.setFrom("no-reply@redseat.com");
+		mail.setMailTo(user.getEmail());
+
+		Context context = new Context();
+		context.setVariables(mail.getProps());
+
+		String html = templateEngine.process("resetpassword", context);
+
+		helper.setTo(mail.getMailTo());
+		helper.setText(html, true);
+		helper.setSubject(mail.getSubject());
+		helper.setFrom(mail.getFrom());
+
+		emailSender.send(message);
+		
 	}
 
 }

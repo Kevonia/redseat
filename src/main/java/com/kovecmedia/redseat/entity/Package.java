@@ -34,9 +34,11 @@ public class Package {
 
 	private double value;
 
-	private PackagesStatus Status;
+	private PackagesStatus status;
 
 	private PackageLocation location;
+	
+	private boolean preAlert;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "userId")
@@ -101,11 +103,11 @@ public class Package {
 	}
 
 	public PackagesStatus getStatus() {
-		return Status;
+		return status;
 	}
 
 	public void setStatus(PackagesStatus status) {
-		Status = status;
+		this.status = status;
 	}
 
 	public PackageLocation getLocation() {
@@ -144,6 +146,20 @@ public class Package {
 		return userId;
 	}
 
+	
+
+	public boolean isPreAlert() {
+		return preAlert;
+	}
+
+	public void setPreAlert(boolean preAlert) {
+		this.preAlert = preAlert;
+	}
+
+	public User getUserId() {
+		return userId;
+	}
+
 	public void setUserId(User userId) {
 		this.userId = userId;
 	}
@@ -158,7 +174,7 @@ public class Package {
 		this.seller = seller;
 		this.weight = weight;
 		this.value = value;
-		Status = status;
+		this.status = status;
 		this.location = location;
 		this.userId = user_id;
 		this.created_at = created_at;

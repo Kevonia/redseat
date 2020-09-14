@@ -33,4 +33,13 @@ public class PackeageServiceImpl implements PackegeService {
 		return  packageInvoice;
 	}
 
+	@Override
+	public Package add(Package package1) {
+		// TODO Auto-generated method stub
+		packageRepository.save(package1);
+		return package1;
+	}
+	
+	
+
 }
