@@ -102,6 +102,7 @@ public class UserServiceImpl implements UserService {
 			user.setPassword(userRegistration.getPassword());
 			user.setName(userRegistration.getName());
 			user.setEmail(userRegistration.getEmail());
+			user.setPoints((long) 0);
 			addressRepository.save(address);
 			contactnumberepository.save(contactNumber);
 

@@ -12,13 +12,13 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@SequenceGenerator(name="user_id_seq", initialValue=100, allocationSize=1)
 public class User {
-	@TableGenerator(name = "userGenerator", allocationSize = 1, initialValue = 100)
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "userGenerator")
+	 @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="user_id_seq")
 	private Long id;
 
-	@Column(columnDefinition = "BIG INT DEFAULT 0")
+
 	private Long points;
 
 	private String name;
