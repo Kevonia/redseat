@@ -13,17 +13,18 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User {
+	@TableGenerator(name = "userGenerator", allocationSize = 1, initialValue = 100)
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "userGenerator")
 	private Long id;
-	
+
 	@Column(columnDefinition = "BIG INT DEFAULT 0")
 	private Long points;
 
 	private String name;
 
 	private String password;
-	
+
 	@Column(name = "isActive", insertable = false, updatable = true, columnDefinition = "bit DEFAULT true")
 	private Boolean isActive;
 
@@ -74,7 +75,7 @@ public class User {
 	}
 
 	public void setPassword(String password) {
-		this.password =  passwordEncoder().encode(password);
+		this.password = passwordEncoder().encode(password);
 	}
 
 	public String getEmail() {
@@ -115,8 +116,7 @@ public class User {
 	}
 
 	public void setAddress(Set<Address> address) {
-		
-		
+
 		this.address = address;
 	}
 
@@ -143,8 +143,7 @@ public class User {
 	public void setUpdate_by(String update_by) {
 		Update_by = update_by;
 	}
-	
-	
+
 	public Long getPoints() {
 		return points;
 	}
@@ -178,7 +177,7 @@ public class User {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
