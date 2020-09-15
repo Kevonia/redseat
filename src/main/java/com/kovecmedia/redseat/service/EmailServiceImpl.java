@@ -50,7 +50,7 @@ public class EmailServiceImpl implements EmailService {
 
 	@Autowired
 	private BillingRepository billingRepository;
-	
+
 	@Autowired
 	private ForgetPasswordRepository forgetPasswordRepository;
 
@@ -72,7 +72,7 @@ public class EmailServiceImpl implements EmailService {
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("name", user.getName());
 		model.put("logo", "https://redseatcourier.com/assets/img/rscja-logo.png");
-		model.put("id",  user.getId());
+		model.put("id", user.getId());
 		mail.setProps(model);
 
 		mail.setFrom("no-reply@redseat.com");
@@ -101,8 +101,7 @@ public class EmailServiceImpl implements EmailService {
 
 		} else if (templateName.equals("billing")) {
 			sendBillingInvoice(user);
-		}
-		else if(templateName.equals("resetpassword")){
+		} else if (templateName.equals("resetpassword")) {
 			sendResetPassword(user);
 		}
 
@@ -171,7 +170,7 @@ public class EmailServiceImpl implements EmailService {
 
 					emailSender.send(message);
 					achivefile(itemname);
-					
+
 				}
 			}
 
@@ -226,39 +225,40 @@ public class EmailServiceImpl implements EmailService {
 		// TODO Auto-generated method stub
 		MimeMessage message = emailSender.createMimeMessage();
 		MimeMessageHelper helper = getEmailHelper(message);
-		
+
 		ForgetPassword forgetPassword = forgetPasswordRepository.findByUsedAndUser(false, user);
-		
-		
 
-		Mail mail = new Mail();
+		if (forgetPassword != null) {
 
-		mail.setFrom("no-reply@redseat.com");
-		mail.setMailTo(forgetPassword.getUser().getEmail());
+			Mail mail = new Mail();
 
-		mail.setSubject("FORGOT YOUR PASSWORD?");
+			mail.setFrom("no-reply@redseat.com");
+			mail.setMailTo(forgetPassword.getUser().getEmail());
 
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("name", forgetPassword.getUser().getName());
-		model.put("token", "http://localhost:8080/reset/"+forgetPassword.getToken());
+			mail.setSubject("FORGOT YOUR PASSWORD?");
 
-		mail.setProps(model);
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("name", forgetPassword.getUser().getName());
+			model.put("token", "http://localhost:8080/reset/" + forgetPassword.getToken());
 
-		mail.setFrom("no-reply@redseat.com");
-		mail.setMailTo(user.getEmail());
+			mail.setProps(model);
 
-		Context context = new Context();
-		context.setVariables(mail.getProps());
+			mail.setFrom("no-reply@redseat.com");
+			mail.setMailTo(user.getEmail());
 
-		String html = templateEngine.process("resetpassword", context);
+			Context context = new Context();
+			context.setVariables(mail.getProps());
 
-		helper.setTo(mail.getMailTo());
-		helper.setText(html, true);
-		helper.setSubject(mail.getSubject());
-		helper.setFrom(mail.getFrom());
+			String html = templateEngine.process("resetpassword", context);
 
-		emailSender.send(message);
-		
+			helper.setTo(mail.getMailTo());
+			helper.setText(html, true);
+			helper.setSubject(mail.getSubject());
+			helper.setFrom(mail.getFrom());
+
+			emailSender.send(message);
+		}
+
 	}
 
 }

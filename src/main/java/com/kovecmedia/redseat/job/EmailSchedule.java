@@ -93,6 +93,7 @@ public class EmailSchedule {
 			history.setRuntime(time);
 			e.printStackTrace();
 			history.setStatus(JobStatus.Failed);
+			e.printStackTrace();
 		}
 
 		logger.info("Welcome Email Job End");

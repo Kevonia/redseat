@@ -34,9 +34,15 @@ public class ScheduledJobSeeder {
 			scheduledJob2.setIsActive(true);
 			scheduledJob2.setTemplateName("billing");
 			scheduledJob2.setType(JobType.EMAIL);
+			
+			ScheduledJob scheduledJob3 = new ScheduledJob();
+			scheduledJob3.setIsActive(true);
+			scheduledJob3.setTemplateName("resetpassword");
+			scheduledJob3.setType(JobType.EMAIL);
 
 			list.add(scheduledJob);
 			list.add(scheduledJob2);
+			list.add(scheduledJob3);
 
 			long end = System.currentTimeMillis();
 			scheduledJobRepository.saveAll(list);

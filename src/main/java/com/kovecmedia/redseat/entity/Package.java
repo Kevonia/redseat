@@ -52,7 +52,7 @@ public class Package {
 
 	private java.sql.Timestamp Update_at;
 
-	private String Update_by;
+	private String updateBy;
 
 	public Long getId() {
 		return id;
@@ -135,11 +135,11 @@ public class Package {
 	}
 
 	public String getUpdate_by() {
-		return Update_by;
+		return this.updateBy;
 	}
 
 	public void setUpdate_by(String update_by) {
-		Update_by = update_by;
+		this.updateBy = update_by;
 	}
 	@JsonIgnore
 	public User getUserid() {
@@ -179,7 +179,7 @@ public class Package {
 		this.userId = user_id;
 		this.created_at = created_at;
 		Update_at = update_at;
-		Update_by = update_by;
+		this.updateBy = update_by;
 	}
 
 	public Package() {
