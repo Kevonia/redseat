@@ -37,6 +37,7 @@ import com.kovecmedia.redseat.entity.User;
 import com.kovecmedia.redseat.model.BillingStatus;
 import com.kovecmedia.redseat.model.Mail;
 import com.kovecmedia.redseat.model.PackageLocation;
+import com.kovecmedia.redseat.model.SendingEmailAddress;
 import com.lowagie.text.DocumentException;
 
 @Service
@@ -64,7 +65,7 @@ public class EmailServiceImpl implements EmailService {
 
 		Mail mail = new Mail();
 
-		mail.setFrom("no-reply@redseat.com");
+		mail.setFrom(SendingEmailAddress.NO_REPY.toString());
 		mail.setMailTo(user.getEmail());
 
 		mail.setSubject("Welcome to RedSeat");
@@ -75,7 +76,6 @@ public class EmailServiceImpl implements EmailService {
 		model.put("id", user.getId());
 		mail.setProps(model);
 
-		mail.setFrom("no-reply@redseat.com");
 		mail.setMailTo(user.getEmail());
 
 		Context context = new Context();
@@ -135,7 +135,7 @@ public class EmailServiceImpl implements EmailService {
 
 					System.out.println(itemname);
 
-					mail.setFrom("no-reply@redseat.com");
+					mail.setFrom(SendingEmailAddress.BILLING.toString());
 					mail.setMailTo(user.getEmail());
 
 					mail.setSubject("Sending Email with Thymeleaf HTML Template Example");
@@ -150,7 +150,7 @@ public class EmailServiceImpl implements EmailService {
 					model.put("total", invoice.getFee().stream().mapToDouble(o -> o.getValue()).sum());
 					mail.setProps(model);
 
-					mail.setFrom("no-reply@redseat.com");
+				
 					mail.setMailTo(user.getEmail());
 
 					Context context = new Context();
@@ -232,7 +232,7 @@ public class EmailServiceImpl implements EmailService {
 
 			Mail mail = new Mail();
 
-			mail.setFrom("no-reply@redseat.com");
+			mail.setFrom(SendingEmailAddress.NO_REPY.toString());
 			mail.setMailTo(forgetPassword.getUser().getEmail());
 
 			mail.setSubject("FORGOT YOUR PASSWORD?");
@@ -243,7 +243,7 @@ public class EmailServiceImpl implements EmailService {
 
 			mail.setProps(model);
 
-			mail.setFrom("no-reply@redseat.com");
+		
 			mail.setMailTo(user.getEmail());
 
 			Context context = new Context();
