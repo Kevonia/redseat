@@ -25,7 +25,7 @@ public class User {
 
 	private String password;
 
-	@Column(name = "isActive", insertable = false, updatable = true, columnDefinition = "bit DEFAULT true")
+	@Column(name = "isActive", insertable = false, updatable = true, columnDefinition = "boolean DEFAULT true")
 	private Boolean isActive;
 
 	@Column(unique = true)
