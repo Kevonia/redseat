@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.kovecmedia.redseat.doa.MenuRepository;
 import com.kovecmedia.redseat.doa.RoleRepository;
+import com.kovecmedia.redseat.doa.UserRepository;
 import com.kovecmedia.redseat.entity.Menu;
 
 @Component
@@ -20,7 +21,7 @@ public class MenuSeeder {
 	private MenuRepository menuRepository;
 
 	@Autowired
-	private RoleRepository roleRepository;
+	private RoleRepository roleRepository;	
 
 	public void run() {
 		try {

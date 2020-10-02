@@ -11,8 +11,10 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -28,9 +30,11 @@ import org.thymeleaf.context.Context;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import com.kovecmedia.redseat.doa.BillingRepository;
+import com.kovecmedia.redseat.doa.FeesRepository;
 import com.kovecmedia.redseat.doa.ForgetPasswordRepository;
 import com.kovecmedia.redseat.doa.PackageRepository;
 import com.kovecmedia.redseat.entity.Billing;
+import com.kovecmedia.redseat.entity.Fee;
 import com.kovecmedia.redseat.entity.ForgetPassword;
 import com.kovecmedia.redseat.entity.Package;
 import com.kovecmedia.redseat.entity.User;
@@ -54,6 +58,9 @@ public class EmailServiceImpl implements EmailService {
 
 	@Autowired
 	private ForgetPasswordRepository forgetPasswordRepository;
+
+	@Autowired
+	private FeesRepository feeRepository;
 
 	@Autowired
 	private org.thymeleaf.spring5.SpringTemplateEngine templateEngine;
@@ -109,73 +116,99 @@ public class EmailServiceImpl implements EmailService {
 
 	@Override
 	public void sendBillingInvoice(User user) throws MessagingException, IOException, DocumentException {
-		MimeMessage message = emailSender.createMimeMessage();
-		MimeMessageHelper helper = getEmailHelper(message);
 
 		List<com.kovecmedia.redseat.entity.Package> packagelist = packageRepository.findByUserIdandLocation(user,
 				PackageLocation.WAREHOUSE);
+
+		for (Package packageitem : packagelist) {
+
+			if (!packageitem.isPreAlert()) {
+
+				Billing billing = new Billing();
+				Set<Fee> billingfees = new HashSet();
+
+				billing.setDescription(packageitem.getDescription() + '-' + user.getName());
+				billing.setPackageId(packageitem);
+				billing.setStatus(BillingStatus.UNPAID);
+
+				for (Fee item : feeRepository.findAll()) {
+					if (packageitem.getWeight() < item.getUpperLimit()
+							&& packageitem.getWeight() >= item.getLowerLimit()) {
+						billingfees.add(item);
+					}
+						
+				}
+
+				billing.setFee(billingfees);
+				
+				billingRepository.save(billing);
+
+				processInvoice(user, billing);
+			
+				packageRepository.save(packageitem);
+				
+		
+			
+				
+			}
+		}
+
+	}
+
+	private void processInvoice(User user, Billing invoice) throws IOException, DocumentException, MessagingException {
+		java.util.Date today = Calendar.getInstance().getTime();
 
 		byte[] fileContent = FileUtils
 				.readFileToByteArray(new File(System.getProperty("user.home") + File.separator + "logo.png"));
 		String encodedString = Base64.getEncoder().encodeToString(fileContent);
 
+		MimeMessage message = emailSender.createMimeMessage();
+		MimeMessageHelper helper = getEmailHelper(message);
+
 		String image = "data:image/png;base64," + encodedString;
+		if (invoice.getFee().size() != 0) {
+			Mail mail = new Mail();
 
-		java.util.Date today = Calendar.getInstance().getTime();
-		for (Package packageitem : packagelist) {
+			String itemname = user.getName() + "-" + invoice.getId();
 
-			List<Billing> invoices = billingRepository.findbyStatusandpackageId(BillingStatus.UNPAID, packageitem);
+			System.out.println(itemname);
 
-			for (Billing invoice : invoices) {
+			mail.setFrom(SendingEmailAddress.BILLING.toString());
+			mail.setMailTo(user.getEmail());
 
-				if (invoice.getFee().size() != 0) {
-					Mail mail = new Mail();
+			mail.setSubject("Sending Email with Thymeleaf HTML Template Example");
 
-					String itemname = user.getName() + "-" + invoice.getId();
+			Map<String, Object> model = new HashMap<String, Object>();
 
-					System.out.println(itemname);
+			model.put("invoice", invoice.getId());
+			model.put("today", today);
+			model.put("name", user.getName());
+			model.put("email", user.getEmail());
+			model.put("billing", invoice.getFee());
+			model.put("total", invoice.getFee().stream().mapToDouble(o -> o.getValueJmd()).sum());
+			mail.setProps(model);
 
-					mail.setFrom(SendingEmailAddress.BILLING.toString());
-					mail.setMailTo(user.getEmail());
+			mail.setMailTo(user.getEmail());
 
-					mail.setSubject("Sending Email with Thymeleaf HTML Template Example");
+			Context context = new Context();
+			context.setVariables(mail.getProps());
+			context.setVariable("image", image);
 
-					Map<String, Object> model = new HashMap<String, Object>();
+			String html = templateEngine.process("billing", context);
 
-					model.put("invoice", invoice.getId());
-					model.put("today", today);
-					model.put("name", user.getName());
-					model.put("email", user.getEmail());
-					model.put("billing", invoice.getFee());
-					model.put("total", invoice.getFee().stream().mapToDouble(o -> o.getValue()).sum());
-					mail.setProps(model);
+			String output = generatePdfFromHtml(html, itemname);
 
-				
-					mail.setMailTo(user.getEmail());
+			helper.addAttachment("invoice.pdf", new ClassPathResource(itemname + ".pdf"));
 
-					Context context = new Context();
-					context.setVariables(mail.getProps());
-					context.setVariable("image", image);
+			helper.setTo(mail.getMailTo());
+			helper.setText(html, true);
+			helper.setSubject(mail.getSubject());
+			helper.setFrom(mail.getFrom());
 
-					String html = templateEngine.process("billing", context);
-
-					String output = generatePdfFromHtml(html, itemname);
-
-					helper.addAttachment("invoice.pdf", new ClassPathResource(itemname + ".pdf"));
-
-					helper.setTo(mail.getMailTo());
-					helper.setText(html, true);
-					helper.setSubject(mail.getSubject());
-					helper.setFrom(mail.getFrom());
-
-					emailSender.send(message);
-					achivefile(itemname);
-
-				}
-			}
+			emailSender.send(message);
+			achivefile(itemname);
 
 		}
-
 	}
 
 	private String generatePdfFromHtml(String html, String name) throws IOException, DocumentException {
@@ -243,7 +276,6 @@ public class EmailServiceImpl implements EmailService {
 
 			mail.setProps(model);
 
-		
 			mail.setMailTo(user.getEmail());
 
 			Context context = new Context();

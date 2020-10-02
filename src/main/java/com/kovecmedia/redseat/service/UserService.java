@@ -34,5 +34,7 @@ public interface UserService {
 	boolean checkToken(String token);
 	
 	void UpdatePassword(ResetRequest request);
+	
+	User UpdateProfile(User user);
 
 }

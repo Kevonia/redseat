@@ -23,7 +23,6 @@ public class ForgetPassword {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "User")
 	private User user;
 
 	@Column(name = "created_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")

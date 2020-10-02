@@ -25,7 +25,7 @@ public class Invoice {
 	
 	private String type;
 	
-	@Lob
+
 	@Column(length=100000)
 	private byte[] data;
 	
@@ -50,7 +50,8 @@ public class Invoice {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
+	@Column(length=100000)
 	public byte[] getData() {
 		return data;
 	}

@@ -244,4 +244,18 @@ public class UserServiceImpl implements UserService {
 
 	}
 
+	@Override
+	public User UpdateProfile(User user) {
+		// TODO Auto-generated method stub
+		User user2 = userRepository.findById(user.getId()).get();
+		
+		user2.setName(user.getName());
+		
+		user2.setEmail(user.getEmail());
+		
+		
+		userRepository.save(user2);
+         return user;
+	}
+
 }

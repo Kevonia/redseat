@@ -43,7 +43,7 @@ public class PackageSeeder {
 					package1.setDescription(faker.company().catchPhrase());
 					package1.setValue(2.00);
 					package1.setWeight(4);
-					package1.setUserId(userRepository.getOne((long) i));
+					package1.setUserId(userRepository.getOne((long) 100));
 					package1.setUpdate_by("system");
 					list.add(package1);
 				}

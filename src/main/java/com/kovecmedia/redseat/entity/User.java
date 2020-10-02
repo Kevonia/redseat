@@ -18,7 +18,7 @@ public class User {
 	 @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="user_id_seq")
 	private Long id;
 
-
+	@Column(name = "points", insertable = false, columnDefinition = "BIGINT DEFAULT 0")
 	private Long points;
 
 	private String name;
