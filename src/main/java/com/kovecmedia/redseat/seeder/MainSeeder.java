@@ -60,15 +60,15 @@ public class MainSeeder implements CommandLineRunner {
 		NumberFormat formatter = new DecimalFormat("#0.00000");
 
 		long start = System.currentTimeMillis();
-		countrySeeder.run();
-		roleSeeder.run();
-		addressSeeder.run();
-		countactNumberSeeder.run();
-		userSeeder.run();
-		packageSeeder.run();
+//		countrySeeder.run();
+//		roleSeeder.run();
+//		addressSeeder.run();
+//		countactNumberSeeder.run();
+//		userSeeder.run();
+//		packageSeeder.run();
 //		invoiceSeeder.run();
-		scheduledJobSeeder.run();
-		feeSeeder.run();
+//		scheduledJobSeeder.run();
+//		feeSeeder.run();
 //		billingSeeder.run();
 //        messageQueueSeeder.run();
 //		menuSeeder.run();
