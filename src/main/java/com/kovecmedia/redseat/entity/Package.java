@@ -48,9 +48,9 @@ public class Package {
 
 	private java.sql.Timestamp created_at;
 
-	@Column(name = "Update_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Column(name = "updated_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 
-	private java.sql.Timestamp Update_at;
+	private java.sql.Timestamp updated_at;
 
 	private String updateBy;
 
@@ -127,11 +127,11 @@ public class Package {
 	}
 
 	public java.sql.Timestamp getUpdate_at() {
-		return Update_at;
+		return updated_at;
 	}
 
 	public void setUpdate_at(java.sql.Timestamp update_at) {
-		Update_at = update_at;
+		this.updated_at = update_at;
 	}
 
 	public String getUpdate_by() {
@@ -178,7 +178,7 @@ public class Package {
 		this.location = location;
 		this.userId = user_id;
 		this.created_at = created_at;
-		Update_at = update_at;
+		this.updated_at = update_at;
 		this.updateBy = update_by;
 	}
 

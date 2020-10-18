@@ -28,9 +28,9 @@ public class Role {
 
 	private java.sql.Timestamp created_at;
 
-	@Column(name = "Update_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Column(name = "updated_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 
-	private java.sql.Timestamp Update_at;
+	private java.sql.Timestamp updated_at;
 	
 	private String Update_by;
 	
@@ -71,11 +71,11 @@ public class Role {
 	}
 
 	public java.sql.Timestamp getUpdate_at() {
-		return Update_at;
+		return updated_at;
 	}
 
 	public void setUpdate_at(java.sql.Timestamp update_at) {
-		Update_at = update_at;
+		updated_at = update_at;
 	}
 
 	public String getUpdate_by() {
