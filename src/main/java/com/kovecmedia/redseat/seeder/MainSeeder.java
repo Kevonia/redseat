@@ -76,7 +76,7 @@ public class MainSeeder implements CommandLineRunner {
 //        messageQueueSeeder.run();
 //		menuSeeder.run();
 //		menuItemSeeder.run();
-		idtypeSeeder.run();
+//		idtypeSeeder.run();
 		long end = System.currentTimeMillis();
 		logger.info("All  Seeder ran in " + formatter.format((end - start) / 1000d) + " seconds");
 
