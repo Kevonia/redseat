@@ -76,4 +76,10 @@ public class DeliveryServiceImpl implements DeliveryService {
 		return 	 deliveryrepository.findByUser(user);
 	}
 
+	@Override
+	public Delivery getById(long id) throws Exception {
+		// TODO Auto-generated method stub
+		return deliveryrepository.findById(id).get();
+	}
+
 }

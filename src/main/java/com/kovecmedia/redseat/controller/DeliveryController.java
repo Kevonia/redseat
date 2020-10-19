@@ -28,7 +28,7 @@ public class DeliveryController {
 	Logger logger = LoggerFactory.getLogger(DeliveryController.class);
 	@Autowired
 	private DeliveryService deliveryService;
-	
+
 	@Autowired
 	private UserRepository userRepository;
 
@@ -37,15 +37,15 @@ public class DeliveryController {
 
 		try {
 			deliveryService.addDelivery(deliveryRequest);
-		
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
-      
+
 		}
 
 		return deliveryRequest;
 	}
-	
+
 	@GetMapping(value = "/user/{id}", produces = "application/json")
 	public List<Delivery> getByIdUser(@PathVariable long id) {
 
@@ -59,6 +59,21 @@ public class DeliveryController {
 		}
 
 		return list;
+	}
+
+	@GetMapping(value = "/{id}", produces = "application/json")
+	public Delivery getById(@PathVariable long id) {
+
+		Delivery delivery = new Delivery();
+
+		try {
+			delivery = deliveryService.getById(id);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+
+		}
+
+		return delivery;
 	}
 
 }

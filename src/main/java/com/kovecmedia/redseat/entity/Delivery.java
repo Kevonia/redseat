@@ -43,7 +43,7 @@ public class Delivery {
 
 	private java.sql.Timestamp created_at;
 
-	@Column(name = "Update_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Column(name = "updatde_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 
 	private java.sql.Timestamp Update_at;
 	
@@ -58,7 +58,7 @@ public class Delivery {
 	
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user")
+	@JoinColumn(name = "userId")
 	private User user;
 	
 

@@ -12,4 +12,6 @@ public interface DeliveryService {
 	void addDelivery(DeliveryRequest deliveryRequest );
 	
 	List<Delivery> getAllByUser(User user) throws Exception;
+	
+	Delivery getById(long id)throws Exception;
 }
