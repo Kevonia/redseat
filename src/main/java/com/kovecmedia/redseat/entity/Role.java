@@ -20,6 +20,10 @@ public class Role {
     private Long id;
 
     private String name;
+    
+    
+    @Column(name = "display_name")
+    private String display_name;
 
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<User> users;
@@ -92,6 +96,22 @@ public class Role {
 
 	public void setMenuId(Menu menuId) {
 		this.menuId = menuId;
+	}
+
+	public String getDisplay_name() {
+		return display_name;
+	}
+
+	public void setDisplay_name(String display_name) {
+		this.display_name = display_name;
+	}
+
+	public java.sql.Timestamp getUpdated_at() {
+		return updated_at;
+	}
+
+	public void setUpdated_at(java.sql.Timestamp updated_at) {
+		this.updated_at = updated_at;
 	}
     
     

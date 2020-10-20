@@ -35,10 +35,13 @@ public class RoleSeeder {
 			Role role3 = new Role();
 
 			role1.setName(Roles.ROLE_USER.name());
+			role1.setDisplay_name(Roles.ROLE_USER.name());
 			role1.setUpdate_by(update_by);
 			role2.setName(Roles.ROLE_MODERATOR.name());
+			role2.setDisplay_name(Roles.ROLE_MODERATOR.name());
 			role2.setUpdate_by(update_by);
 			role3.setName(Roles.ROLE_ADMIN.name());
+			role3.setDisplay_name(Roles.ROLE_ADMIN.name());
 			role3.setUpdate_by(update_by);
 			
 			list.add(role1);
