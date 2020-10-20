@@ -25,7 +25,7 @@ public class Billing {
 	private BillingStatus status;
 	private Date updated;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "package")
 	private Package packageId;
 

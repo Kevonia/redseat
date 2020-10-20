@@ -9,6 +9,8 @@ public class UserPackages {
 	
 	private String name;
 	private long id;
+	private long points;
+	
 	private List<Package> packageslist;
 	
 	public String getName() {
@@ -29,6 +31,13 @@ public class UserPackages {
 	public void setId(long id) {
 		this.id = id;
 	}
+	public long getPoints() {
+		return points;
+	}
+	public void setPoints(long points) {
+		this.points = points;
+	}
+	
 	
 	
 

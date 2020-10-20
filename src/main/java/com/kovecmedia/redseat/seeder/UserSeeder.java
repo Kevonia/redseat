@@ -42,31 +42,40 @@ public class UserSeeder {
 			Faker faker = new Faker();
 			NumberFormat formatter = new DecimalFormat("#0.00000");
 			
-			long start = System.currentTimeMillis();
-			for (int i = 1; i <= 200; i++) {
-				User user = new User();
-				Random rand = new Random();
-				Set<Address> addresslist = new HashSet<Address>();
-				Set<ContactNumber> contactlist = new HashSet<ContactNumber>();
-				Set<Role> rolelist = new HashSet<Role>();
-				
-				contactlist.add(contactNumberRepository.getOne((long) i));
-				addresslist.add(addressRepository.getOne((long) i));
-				rolelist.add(roleRepository.getOne((long) (rand.nextInt(3 - 1 + 1) + 1)));
-				
-				user.setName(faker.name().fullName());
-				user.setEmail(faker.internet().safeEmailAddress());
-				user.setPassword("testpassword");
-				user.setAddress(addresslist);
-				user.setRoles(rolelist);
-				user.setPhone(contactlist);
-				user.setUpdate_by(UpdateBy.System.name());
-				list.add(user);
-			}
+			User user = new User();
+			user.setId((long) 777);
+			user.setName("Mikhail Ramsay");
+			user.setEmail("mikhailramsay@gmail.com");
+			user.setPassword("testpassword");
+	
+			user.setUpdate_by(UpdateBy.System.name());
 			
-			long end = System.currentTimeMillis();
-			userRepository.saveAll(list);
-			logger.info("User  Seeder ran in " + formatter.format((end - start) / 1000d) + " seconds");
+//			
+//			long start = System.currentTimeMillis();
+//			for (int i = 1; i <= 10; i++) {
+//				User user = new User();
+//				Random rand = new Random();
+//				Set<Address> addresslist = new HashSet<Address>();
+//				Set<ContactNumber> contactlist = new HashSet<ContactNumber>();
+//				Set<Role> rolelist = new HashSet<Role>();
+//				
+//				contactlist.add(contactNumberRepository.getOne((long) i));
+//				addresslist.add(addressRepository.getOne((long) i));
+//				rolelist.add(roleRepository.getOne((long) (rand.nextInt(3 - 1 + 1) + 1)));
+//				
+//				user.setName(faker.name().fullName());
+//				user.setEmail(faker.internet().safeEmailAddress());
+//				user.setPassword("testpassword");
+//				user.setAddress(addresslist);
+//				user.setRoles(rolelist);
+//				user.setPhone(contactlist);
+//				user.setUpdate_by(UpdateBy.System.name());
+//				list.add(user);
+//			}
+//			
+//			long end = System.currentTimeMillis();
+//			userRepository.saveAll(list);
+			//logger.info("User  Seeder ran in " + formatter.format((end - start) / 1000d) + " seconds");
 
 		} catch (Exception ex) {
 			ex.printStackTrace();

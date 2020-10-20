@@ -12,16 +12,20 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@SequenceGenerator(name="user_id_seq", initialValue=100, allocationSize=1)
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	 @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="user_id_seq")
 	private Long id;
+
+	@Column(name = "points", insertable = false, columnDefinition = "BIGINT DEFAULT 0")
+	private Long points;
 
 	private String name;
 
 	private String password;
-	
-	@Column(name = "isActive", insertable = false, updatable = true, columnDefinition = "bit DEFAULT true")
+
+	@Column(name = "isActive", insertable = false, updatable = true, columnDefinition = "boolean DEFAULT true")
 	private Boolean isActive;
 
 	@Column(unique = true)
@@ -43,9 +47,9 @@ public class User {
 
 	private java.sql.Timestamp created_at;
 
-	@Column(name = "Update_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Column(name = "updated_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 
-	private java.sql.Timestamp Update_at;
+	private java.sql.Timestamp updated_at;
 
 	private String Update_by;
 
@@ -71,7 +75,7 @@ public class User {
 	}
 
 	public void setPassword(String password) {
-		this.password =  passwordEncoder().encode(password);
+		this.password = passwordEncoder().encode(password);
 	}
 
 	public String getEmail() {
@@ -112,8 +116,7 @@ public class User {
 	}
 
 	public void setAddress(Set<Address> address) {
-		
-		
+
 		this.address = address;
 	}
 
@@ -126,11 +129,11 @@ public class User {
 	}
 
 	public java.sql.Timestamp getUpdate_at() {
-		return Update_at;
+		return updated_at;
 	}
 
 	public void setUpdate_at(java.sql.Timestamp update_at) {
-		Update_at = update_at;
+		updated_at = update_at;
 	}
 
 	public String getUpdate_by() {
@@ -140,8 +143,15 @@ public class User {
 	public void setUpdate_by(String update_by) {
 		Update_by = update_by;
 	}
-	
-	
+
+	public Long getPoints() {
+		return points;
+	}
+
+	public void setPoints(Long points) {
+		this.points = points;
+	}
+
 	@JsonIgnore
 	public Boolean getIsActive() {
 		return isActive;
@@ -167,7 +177,7 @@ public class User {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();

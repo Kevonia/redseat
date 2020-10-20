@@ -12,4 +12,5 @@ import com.kovecmedia.redseat.entity.Package;
 public interface BillingRepository extends JpaRepository<Billing, Long> {
 	@Query("SELECT b from billing b where b.status =:status and b.packageId =:package1")
 	List<Billing> findbyStatusandpackageId(BillingStatus status, Package package1);
+	Billing findBypackageId(Package package1);
 }

@@ -34,11 +34,13 @@ public class Package {
 
 	private double value;
 
-	private PackagesStatus Status;
+	private PackagesStatus status;
 
 	private PackageLocation location;
+	
+	private boolean preAlert;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "userId")
 	private User userId;
 
@@ -46,11 +48,11 @@ public class Package {
 
 	private java.sql.Timestamp created_at;
 
-	@Column(name = "Update_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Column(name = "updated_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 
-	private java.sql.Timestamp Update_at;
+	private java.sql.Timestamp updated_at;
 
-	private String Update_by;
+	private String updateBy;
 
 	public Long getId() {
 		return id;
@@ -101,11 +103,11 @@ public class Package {
 	}
 
 	public PackagesStatus getStatus() {
-		return Status;
+		return status;
 	}
 
 	public void setStatus(PackagesStatus status) {
-		Status = status;
+		this.status = status;
 	}
 
 	public PackageLocation getLocation() {
@@ -125,22 +127,36 @@ public class Package {
 	}
 
 	public java.sql.Timestamp getUpdate_at() {
-		return Update_at;
+		return updated_at;
 	}
 
 	public void setUpdate_at(java.sql.Timestamp update_at) {
-		Update_at = update_at;
+		this.updated_at = update_at;
 	}
 
 	public String getUpdate_by() {
-		return Update_by;
+		return this.updateBy;
 	}
 
 	public void setUpdate_by(String update_by) {
-		Update_by = update_by;
+		this.updateBy = update_by;
 	}
 	@JsonIgnore
 	public User getUserid() {
+		return userId;
+	}
+
+	
+
+	public boolean isPreAlert() {
+		return preAlert;
+	}
+
+	public void setPreAlert(boolean preAlert) {
+		this.preAlert = preAlert;
+	}
+
+	public User getUserId() {
 		return userId;
 	}
 
@@ -158,12 +174,12 @@ public class Package {
 		this.seller = seller;
 		this.weight = weight;
 		this.value = value;
-		Status = status;
+		this.status = status;
 		this.location = location;
 		this.userId = user_id;
 		this.created_at = created_at;
-		Update_at = update_at;
-		Update_by = update_by;
+		this.updated_at = update_at;
+		this.updateBy = update_by;
 	}
 
 	public Package() {

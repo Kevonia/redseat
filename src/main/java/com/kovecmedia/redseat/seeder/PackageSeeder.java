@@ -34,7 +34,7 @@ public class PackageSeeder {
 				NumberFormat formatter = new DecimalFormat("#0.00000");
 				
 				long start = System.currentTimeMillis();
-				for (int i = 1; i <= 200; i++) {
+				for (int i = 1; i <= 10; i++) {
 					Package  package1 = new Package();
 					package1.setTrackingNumber(faker.numerify("ABC-##-EFG-##-HIJ"));
 					package1.setLocation(PackageLocation.getRandomPackageLocation());
@@ -43,7 +43,7 @@ public class PackageSeeder {
 					package1.setDescription(faker.company().catchPhrase());
 					package1.setValue(2.00);
 					package1.setWeight(4);
-					package1.setUserId(userRepository.getOne((long) i));
+					package1.setUserId(userRepository.getOne((long) 100));
 					package1.setUpdate_by("system");
 					list.add(package1);
 				}

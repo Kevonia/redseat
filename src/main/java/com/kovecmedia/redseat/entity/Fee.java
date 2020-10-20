@@ -10,21 +10,30 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.kovecmedia.redseat.model.FeeType;
+
 @Entity
 @Table(name = "fees")
 public class Fee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String name;
-	
-	private double value;
-	
+
+	private double valueUsd;
+
+	private double valueJmd;
+
+	private double lowerLimit;
+
+	private double upperLimit;
+
+	private FeeType type;
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<Billing> billing;
-	
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -41,16 +50,6 @@ public class Fee {
 		this.name = name;
 	}
 
-
-
-	public double getValue() {
-		return value;
-	}
-
-	public void setValue(double value) {
-		this.value = value;
-	}
-
 	public Set<Billing> getBilling() {
 		return billing;
 	}
@@ -58,7 +57,45 @@ public class Fee {
 	public void setBilling(Set<Billing> billing) {
 		this.billing = billing;
 	}
-	
-	
-	
+
+	public double getLowerLimit() {
+		return lowerLimit;
+	}
+
+	public void setLowerLimit(double lowerLimit) {
+		this.lowerLimit = lowerLimit;
+	}
+
+	public double getUpperLimit() {
+		return upperLimit;
+	}
+
+	public void setUpperLimit(double upperLimit) {
+		this.upperLimit = upperLimit;
+	}
+
+	public FeeType getType() {
+		return type;
+	}
+
+	public void setType(FeeType type) {
+		this.type = type;
+	}
+
+	public double getValueUsd() {
+		return valueUsd;
+	}
+
+	public void setValueUsd(double valueUsd) {
+		this.valueUsd = valueUsd;
+	}
+
+	public double getValueJmd() {
+		return valueJmd;
+	}
+
+	public void setValueJmd(double valueJmd) {
+		this.valueJmd = valueJmd;
+	}
+
 }

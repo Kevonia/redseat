@@ -20,6 +20,10 @@ public class Role {
     private Long id;
 
     private String name;
+    
+    
+    @Column(name = "display_name")
+    private String display_name;
 
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<User> users;
@@ -28,14 +32,14 @@ public class Role {
 
 	private java.sql.Timestamp created_at;
 
-	@Column(name = "Update_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Column(name = "updated_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 
-	private java.sql.Timestamp Update_at;
+	private java.sql.Timestamp updated_at;
 	
 	private String Update_by;
 	
-	@OneToOne()
-    @JoinColumn(name = "menuId", referencedColumnName = "id")
+	@OneToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name = "menuId")
     private Menu menuId;
 
     public Long getId() {
@@ -71,11 +75,11 @@ public class Role {
 	}
 
 	public java.sql.Timestamp getUpdate_at() {
-		return Update_at;
+		return updated_at;
 	}
 
 	public void setUpdate_at(java.sql.Timestamp update_at) {
-		Update_at = update_at;
+		updated_at = update_at;
 	}
 
 	public String getUpdate_by() {
@@ -92,6 +96,22 @@ public class Role {
 
 	public void setMenuId(Menu menuId) {
 		this.menuId = menuId;
+	}
+
+	public String getDisplay_name() {
+		return display_name;
+	}
+
+	public void setDisplay_name(String display_name) {
+		this.display_name = display_name;
+	}
+
+	public java.sql.Timestamp getUpdated_at() {
+		return updated_at;
+	}
+
+	public void setUpdated_at(java.sql.Timestamp updated_at) {
+		this.updated_at = updated_at;
 	}
     
     

@@ -21,7 +21,7 @@ public class Menu {
 	private String name;
 	
 	@OneToOne()
-    @JoinColumn(name = "roleId", referencedColumnName = "id")
+    @JoinColumn(name = "roleId")
 	private Role role;
 	
 	

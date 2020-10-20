@@ -27,7 +27,7 @@ public class CountrySeeder {
 			NumberFormat formatter = new DecimalFormat("#0.00000");
 			
 			long start = System.currentTimeMillis();
-			for (int i = 1; i <= 200; i++) {
+			for (int i = 1; i <= 10; i++) {
 				Country country = new Country();
 				country.setCode(faker.country().countryCode2());
 				country.setCountrycode(faker.country().countryCode3());

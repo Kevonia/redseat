@@ -1,42 +1,434 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+
 <head>
-    <title>Sending Email with Thymeleaf HTML Template Example</title>
-
+    <meta charset="UTF-8" content="">
+    <meta name="x-apple-disable-message-reformatting">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="telephone=no" name="format-detection">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css' />
 
     <!-- use the font -->
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            font-size: 48px;
+            font-size: 14px;
         }
     </style>
+    <title></title>
 </head>
-<body style="margin: 0; padding: 0;">
 
-    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
-        <tr>
-            <td align="center" bgcolor="#78ab46" style="padding: 40px 0 30px 0;">
-                <img th:src="${logo}" alt="https://memorynotfound.com" style="display: block;" />
-            </td>
-        </tr>
-        <tr>
-            <td bgcolor="#eaeaea" style="padding: 40px 30px 40px 30px;">
-                <p th:text="${'Dear,' + name}"></p>
-                <p>Sending Email using Spring Boot with <b>Thymeleaf template !!!</b></p>
-                <p>Thanks</p>
-            </td>
-        </tr>
-        <tr>
-            <td bgcolor="#777777" style="padding: 30px 30px 30px 30px;">
-                <p th:text="${signature}"> ${signature}</p>
-            </td>
-        </tr>
-    </table>
+<body>
+    <div class="es-wrapper-color">
 
+        <table class="es-wrapper" width="100%" cellspacing="0" cellpadding="0">
+            <tbody>
+                <tr>
+                    <td class="esd-email-paddings" valign="top">
+
+
+                        <table class="es-content" cellspacing="0" cellpadding="0" align="center">
+                            <tbody>
+                                <tr>
+                                    <td class="esd-stripe" align="center">
+                                        <table class="es-content-body" width="600" cellspacing="0" cellpadding="0"
+                                            bgcolor="#ffffff" align="center">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="esd-structure" align="left">
+                                                        <table width="100%" cellspacing="0" cellpadding="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="esd-container-frame" width="600"
+                                                                        valign="top" align="center">
+                                                                        <table style="border:none" width="100%"
+                                                                            cellspacing="0" cellpadding="0">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td class="esd-block-image"
+                                                                                        align="center"
+                                                                                        style="font-size:0"><a
+                                                                                            target="_blank"><img
+                                                                                                class="adapt-img"
+                                                                                                src="https://redseatcourier.com/assets/img/rscja-logo.png"
+                                                                                                alt
+                                                                                                style="display: block;"
+                                                                                                width="240"></a></td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="es-content" cellspacing="0" cellpadding="0" align="center">
+                            <tbody>
+                                <tr>
+                                    <td class="esd-stripe" align="center">
+                                        <table class="es-content-body" width="600" cellspacing="0" cellpadding="0"
+                                            bgcolor="#ffffff" align="center">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="esd-structure es-p30t es-p20r es-p20l" align="left">
+                                                        <table width="100%" cellspacing="0" cellpadding="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="esd-container-frame" width="560"
+                                                                        valign="top" align="center">
+                                                                        <table width="100%" cellspacing="0"
+                                                                            cellpadding="0">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td class="esd-block-text es-p5b"
+                                                                                        style="text-align: center;"
+                                                                                        align="left">
+                                                                                        <h2>Welcome to RedSeat
+                                                                                        </h2>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="esd-block-text es-m-txt-c es-p10b"
+                                                                                        align="left">
+                                                                                        <p style="color: #333333;">Your
+                                                                                            new mailing address is
+                                                                                            ready!
+                                                                                        </p>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td class="esd-block-text es-m-txt-c"
+                                                                                        align="left">
+                                                                                        <p style="color: #333333;">
+                                                                                            We’ll take care of your
+                                                                                            packages from now on.
+                                                                                        </p>
+                                                                                        <p style="color: #333333;">
+                                                                                            Need to ship a package? Your
+                                                                                            personal Shipping US Mailing
+                                                                                            address is:
+                                                                                        </p>
+                                                                                        </p>
+                                                                                    </td>
+                                                                                </tr>
+
+                                                                                <tr>
+                                                                                    <td class="esd-block-text es-m-txt-c"
+                                                                                        align="left">
+                                                                                        <p style="color: #333333;">
+                                                                                           <span th:text="${name}"> </span>  <br />
+                                                                                            6858 NW 75th Street<br />
+                                                                                            Ste 3 RSC<span th:text="${id}"> </span>  <br />
+                                                                                            Miami Fl 33166
+                                                                                        </p>
+
+                                                                                        </p>
+                                                                                    </td>
+                                                                                </tr>
+
+                                                                                <tr>
+                                                                                    <td class="esd-block-text es-m-txt-c"
+                                                                                        align="left">
+                                                                                        <p style="color: #333333;">
+                                                                                            To set up:
+                                                                                        </p>
+                                                                                        <ul>
+                                                                                            <li> Alerts </li>
+                                                                                            <li> Track your package
+                                                                                            </li>
+                                                                                            <li> Schedule delivery</li>
+                                                                                        </ul>
+
+                                                                                        </p>
+                                                                                    </td>
+                                                                                </tr>
+
+
+
+
+
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="es-content" cellspacing="0" cellpadding="0" align="center">
+                            <tbody>
+                                <tr>
+                                    <td class="esd-stripe" align="center">
+                                        <table class="es-content-body" style="background-color: #ffffff;" width="600"
+                                            cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="esd-structure" align="left">
+                                                        <table width="100%" cellspacing="0" cellpadding="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="esd-container-frame" width="600"
+                                                                        valign="top" align="center">
+                                                                        <table width="100%" cellspacing="0"
+                                                                            cellpadding="0">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td class="esd-block-spacer es-p40b es-p40r es-p40l"
+                                                                                        align="center"
+                                                                                        style="font-size:0">
+                                                                                        <table width="100%"
+                                                                                            height="100%"
+                                                                                            cellspacing="0"
+                                                                                            cellpadding="0" border="0">
+                                                                                            <tbody>
+                                                                                                <tr>
+                                                                                                    <td
+                                                                                                        style="border-bottom: 0px solid #efefef; background: rgba(0, 0, 0, 0) none repeat scroll 0% 0%; height: 1px; width: 100%; margin: 0px;">
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="esd-structure es-p20t es-p20b es-p20r es-p20l"
+                                                        align="left">
+                                                        <!--[if mso]>
+                                             <table width="560" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                   <td width="270" valign="top">
+                                                      <![endif]-->
+                                                        <table class="es-left" cellspacing="0" cellpadding="0"
+                                                            align="left">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="es-m-p20b esd-container-frame"
+                                                                        width="270" align="left">
+                                                                        <table width="600" cellspacing="0"
+                                                                            cellpadding="0">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td class="esd-block-text es-m-txt-c"
+                                                                                        align="left">
+                                                                                        <p style="color: #333333;">Have
+                                                                                            you submitted your
+                                                                                            documents?
+                                                                                            <br></p>
+
+                                                                                        <p style="color: #333333;">
+                                                                                            Have Please remember that
+                                                                                            inorder for us to transmit
+                                                                                            packages on your behalf you
+                                                                                            are required to sign and
+                                                                                            return.
+
+                                                                                            <br></p>
+
+                                                                                        <p style="color: #333333;">Have
+                                                                                            Have a question? </p>
+                                                                                             <p style="color: #333333;">
+                                                                                            Call us at: 8760000000 Mon -
+                                                                                            Sat 9AM - 5:30 Pm  </p>
+                                                                                           <p style="color: #333333;">  Email us at:  info@redseatcourier.com
+
+                                                                                          </p>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <!--[if mso]>
+                                                   </td>
+                                                   <td width="20"></td>
+                                                   <td width="270" valign="top">
+                                                      <![endif]-->
+                                                        <table class="es-right" cellspacing="0" cellpadding="0"
+                                                            align="right">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="esd-container-frame" width="270"
+                                                                        align="left">
+                                                                        <table width="100%" cellspacing="0"
+                                                                            cellpadding="0">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td class="esd-block-social es-p5t es-m-txt-c"
+                                                                                        align="right"
+                                                                                        style="font-size:0">
+                                                                                        <table
+                                                                                            class="es-table-not-adapt es-social"
+                                                                                            cellspacing="0"
+                                                                                            cellpadding="0">
+                                                                                            <tbody>
+                                                                                                <tr>
+                                                                                                    <td class="es-p10r"
+                                                                                                        valign="top"
+                                                                                                        align="center">
+                                                                                                        <a target="_blank"
+                                                                                                            href><img
+                                                                                                                title="Facebook"
+                                                                                                                src="https://iziloe.stripocdn.email/content/assets/img/social-icons/logo-black/facebook-logo-black.png"
+                                                                                                                alt="Fb"
+                                                                                                                width="32"></a>
+                                                                                                    </td>
+                                                                                                    <td class="es-p10r"
+                                                                                                        valign="top"
+                                                                                                        align="center">
+                                                                                                        <a target="_blank"
+                                                                                                            href><img
+                                                                                                                title="Twitter"
+                                                                                                                src="https://iziloe.stripocdn.email/content/assets/img/social-icons/logo-black/twitter-logo-black.png"
+                                                                                                                alt="Tw"
+                                                                                                                width="32"></a>
+                                                                                                    </td>
+                                                                                                    <td class="es-p10r"
+                                                                                                        valign="top"
+                                                                                                        align="center">
+                                                                                                        <a target="_blank"
+                                                                                                            href><img
+                                                                                                                title="Instagram"
+                                                                                                                src="https://iziloe.stripocdn.email/content/assets/img/social-icons/logo-black/instagram-logo-black.png"
+                                                                                                                alt="Inst"
+                                                                                                                width="32"></a>
+                                                                                                    </td>
+                                                                                                    <td class="es-p10r"
+                                                                                                        valign="top"
+                                                                                                        align="center">
+                                                                                                        <a target="_blank"
+                                                                                                            href><img
+                                                                                                                title="Youtube"
+                                                                                                                src="https://iziloe.stripocdn.email/content/assets/img/social-icons/logo-black/youtube-logo-black.png"
+                                                                                                                alt="Yt"
+                                                                                                                width="32"></a>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <!--[if mso]>
+                                                   </td>
+                                                </tr>
+                                             </table>
+                                             <![endif]-->
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="es-footer" cellspacing="0" cellpadding="0" align="center">
+                            <tbody>
+                                <tr>
+                                    <td class="esd-stripe" align="center">
+                                        <table class="es-footer-body" width="600" cellspacing="0" cellpadding="0"
+                                            align="center">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="esd-structure es-p20t es-p20b es-p20r es-p20l"
+                                                        align="left">
+                                                        <table width="100%" cellspacing="0" cellpadding="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="esd-container-frame" width="560"
+                                                                        valign="top" align="center">
+                                                                        <table width="100%" cellspacing="0"
+                                                                            cellpadding="0">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td class="esd-block-text"
+                                                                                        align="center">
+                                                                                        <p>Company Address</p>
+
+                                                                                        (876)513-2765
+                                                                                        <p> RED SEAT
+                                                                                            COURIER LTD
+
+                                                                                        </p>
+                                                                                        <p>
+                                                                                            17 Campbell's Blvd,
+                                                                                            Kgn 11
+
+                                                                                        </p>
+                                                                                        <p>
+                                                                                            <a
+                                                                                                href="mailto:ship@rscja.com ">
+                                                                                                ship@rscja.com </a> ||
+
+                                                                                            <a
+                                                                                                href="mailto:    info@redseatcourier.com ">
+                                                                                                ship@
+                                                                                                info@redseatcourier.com
+                                                                                            </a>
+                                                                                        </p>
+
+                                                                                        <p>
+                                                                                            <a
+                                                                                                href="https://www.rscja.com ">www.rscja.com
+                                                                                            </a>
+
+                                                                                        </p>
+
+
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
+
 </html>

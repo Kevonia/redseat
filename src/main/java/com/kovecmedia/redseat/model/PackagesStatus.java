@@ -4,7 +4,7 @@ import java.util.Random;
 
 public enum PackagesStatus {
 
-	RECEIVED, COLLECTED,PROCESSING,INTRANSIT,DELIVERED;
+	NEW,RECEIVED,COLLECTED,PROCESSING,INTRANSIT,DELIVERED;
 	
 	public static PackagesStatus getRandomPackagesStatus() {
         Random random = new Random();

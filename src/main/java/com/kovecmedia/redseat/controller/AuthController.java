@@ -32,7 +32,7 @@ import com.kovecmedia.redseat.payload.respond.MessageResponse;
 import com.kovecmedia.redseat.security.services.UserDetailsImpl;
 import com.kovecmedia.redseat.service.UserService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -111,6 +111,7 @@ public class AuthController {
 
 		try {
 			userservice.addUser(signUpRequest, roles);
+			System.out.println("Test");
 		} catch (Exception e) {
 
                 

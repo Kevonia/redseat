@@ -20,12 +20,16 @@ public class Invoice {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	private String name;
 	
-	@Lob
+	private String type;
+	
+
 	@Column(length=100000)
 	private byte[] data;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "packageId")
 	private Package packageId;
     
@@ -46,7 +50,8 @@ public class Invoice {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
+	@Column(length=100000)
 	public byte[] getData() {
 		return data;
 	}
@@ -85,6 +90,22 @@ public class Invoice {
 
 	public void setUpdate_by(String update_by) {
 		Update_by = update_by;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	

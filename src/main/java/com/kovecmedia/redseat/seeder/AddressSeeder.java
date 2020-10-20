@@ -35,11 +35,11 @@ public class AddressSeeder {
 			NumberFormat formatter = new DecimalFormat("#0.00000");
 			
 			long start = System.currentTimeMillis();
-			for (int i = 1; i <= 200; i++) {
+			for (int i = 1; i <= 10; i++) {
 				Address address = new Address();
 			     address.setAddressline1(faker.address().streetAddress());
 			     address.setAddressline2(faker.address().secondaryAddress());
-			     address.setCountry(countryRepository.getOne((long) ThreadLocalRandom.current().nextInt(1, 180 + 1)));
+			     address.setCountry(countryRepository.getOne((long) 1));
 			     address.setType(AddressStatus.getRandomAddressType());
 			     address.setZipcode(faker.address().zipCode());
 			     address.setUpdate_by(UpdateBy.System.name());

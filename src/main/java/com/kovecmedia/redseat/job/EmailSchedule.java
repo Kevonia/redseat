@@ -1,7 +1,5 @@
 package com.kovecmedia.redseat.job;
 
-
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -55,35 +53,41 @@ public class EmailSchedule {
 		history.setStatus(JobStatus.Rnuning);
 
 		try {
-			jobHistoryRepository.save(history);
+
 			List<MessageQueue> messages = messageQueueRepository.findByStatus(MessageStatus.NOTSENT);
-			logger.info("Welcome Email Job Stated");
 
-			for (MessageQueue message : messages) {
-				User user = userRepository.findByEmail(message.getEmail()).get();
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException ex) {
-					logger.log(Level.FATAL, ex);
-					Thread.currentThread().interrupt();
-					return;
+			if (messages != null) {
+				jobHistoryRepository.save(history);
+
+				logger.info("Welcome Email Job Stated");
+
+				for (MessageQueue message : messages) {
+					User user = userRepository.findByEmail(message.getEmail()).get();
+					try {
+						Thread.sleep(10000);
+					} catch (InterruptedException ex) {
+						logger.log(Level.FATAL, ex);
+						Thread.currentThread().interrupt();
+						return;
+					}
+
+					emailService.sendTemplate(user, message.getScheduledId().getTemplateName());
+					message.setStatus(MessageStatus.SENT);
+					message.setRundate(date);
+					messageQueueRepository.save(message);
+
 				}
+				millis = System.currentTimeMillis();
+				date = new java.sql.Date(millis);
+				time = new java.sql.Time(millis);
+				history.setRundate(date);
+				history.setRuntime(time);
 
-				emailService.sendTemplate(user, message.getScheduledId().getTemplateName());
-				message.setStatus(MessageStatus.SENT);
-				message.setRundate(date);
-				messageQueueRepository.save(message);
+				history.setStatus(JobStatus.Passed);
 
+				jobHistoryRepository.save(history);
 			}
-			millis = System.currentTimeMillis();
-			date = new java.sql.Date(millis);
-			time = new java.sql.Time(millis);
-			history.setRundate(date);
-			history.setRuntime(time);
 
-			history.setStatus(JobStatus.Passed);
-
-			jobHistoryRepository.save(history);
 		} catch (Exception e) {
 
 			millis = System.currentTimeMillis();
@@ -93,6 +97,7 @@ public class EmailSchedule {
 			history.setRuntime(time);
 			e.printStackTrace();
 			history.setStatus(JobStatus.Failed);
+			e.printStackTrace();
 		}
 
 		logger.info("Welcome Email Job End");

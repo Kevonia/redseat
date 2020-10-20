@@ -90,7 +90,7 @@
                <td colspan="2">
                   <table>
                      <tr>
-                        <td class="title"><img th:src="${image}" style="width: 100px; max-width:100px;"/> </td>
+                        <td class="title"><img th:src="${image}" style="width: 100px; max-width:100px"/> </td>
                         <td>Invoice #: <span th:text="${invoice}"> </span> <br/>
                            Created: <span th:text="${#dates.format(today, 'dd-MMM-yyyy')}"> </span>
                         </td>
@@ -118,7 +118,7 @@
             <th:block th:each="bill: ${billing}">
                <tr class="item">
                   <td th:text="${bill.name}" />
-                <td> <span>[[${#numbers.formatCurrency(bill.value)}]]</span> </td>
+                <td> <span>[[${#numbers.formatCurrency(bill.valueJmd)}]]</span> </td>
                </tr>
             </th:block>
             <tr class="total">

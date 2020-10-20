@@ -40,7 +40,7 @@ public class BillingSeeder {
 			Faker faker = new Faker();
 			long start = System.currentTimeMillis();
 
-			for (int i = 1; i <= 20; i++) {
+			for (int i = 1; i <= 10; i++) {
 				Billing billing = new Billing();
 				long millis = System.currentTimeMillis();
 				java.sql.Date date = new java.sql.Date(millis);

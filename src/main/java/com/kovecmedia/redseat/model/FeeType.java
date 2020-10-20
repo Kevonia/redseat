@@ -3,7 +3,7 @@ package com.kovecmedia.redseat.model;
 import java.util.Random;
 
 public enum FeeType {
-	Shipping,Processing,Customs,GCT;
+	Shipping,Processing,Customs;
 	
 	public static FeeType getRandomFeeType() {
 	    Random random = new Random();
