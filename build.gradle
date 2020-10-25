@@ -1,0 +1,54 @@
+plugins {
+	id 'org.springframework.boot' version '2.3.4.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+	id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	dependencies {
+	compile "org.springframework.boot:spring-boot-starter-data-jpa:*"
+	compile "org.apache.commons:commons-lang3:3.0"
+	compile "org.xhtmlrenderer:flying-saucer-pdf:9.1.20"
+	compile "mysql:mysql-connector-java:*"
+	compile "log4j:log4j:1.2.17"
+	compile "joda-time:joda-time:2.10.6"
+	compile "org.springframework.boot:spring-boot-starter-oauth2-resource-server:*"
+	compile "org.springframework.boot:spring-boot-starter-web:*"
+	compile "org.springframework.boot:spring-boot-starter-security:*"
+	testCompile "org.springframework.security:spring-security-test:*"
+	testCompile "org.springframework.boot:spring-boot-starter-test:*"
+	compile "org.springframework.boot:spring-boot-starter-mail:*"
+	compile "javax.mail:javax.mail-api:1.6.2"
+	compile "org.thymeleaf:thymeleaf-spring5:*"
+	compile "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:*"
+	testCompile "org.awaitility:awaitility:3.1.2"
+	compile "io.jsonwebtoken:jjwt:0.9.1"
+	compile "javax.validation:validation-api:2.0.0.Final"
+	compile "javax.el:javax.el-api:3.0.0"
+	compile "org.glassfish.web:javax.el:2.2.6"
+	compile "commons-io:commons-io:2.6"
+	compile "io.springfox:springfox-swagger2:2.9.2"
+	compile "com.google.guava:guava:27.0.1-jre"
+	compile "io.springfox:springfox-swagger-ui:2.9.2"
+	compile "io.springfox:springfox-core:2.9.2"
+	compile "com.github.javafaker:javafaker:1.0.2"
+	compile "org.springframework.boot:spring-boot-starter-tomcat:*"
+	testCompile "org.springframework.boot:spring-boot-starter-test:*"
+}
+}
+
+test {
+	useJUnitPlatform()
+}
