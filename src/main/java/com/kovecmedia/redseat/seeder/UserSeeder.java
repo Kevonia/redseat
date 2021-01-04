@@ -50,8 +50,8 @@ public class UserSeeder {
 	
 			user.setUpdate_by(UpdateBy.System.name());
 			
-//			
-//			long start = System.currentTimeMillis();
+			
+			long start = System.currentTimeMillis();
 //			for (int i = 1; i <= 10; i++) {
 //				User user = new User();
 //				Random rand = new Random();
@@ -72,10 +72,10 @@ public class UserSeeder {
 //				user.setUpdate_by(UpdateBy.System.name());
 //				list.add(user);
 //			}
-//			
-//			long end = System.currentTimeMillis();
-//			userRepository.saveAll(list);
-			//logger.info("User  Seeder ran in " + formatter.format((end - start) / 1000d) + " seconds");
+			
+			long end = System.currentTimeMillis();
+			userRepository.saveAll(list);
+			logger.info("User  Seeder ran in " + formatter.format((end - start) / 1000d) + " seconds");
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
