@@ -63,20 +63,20 @@ public class MainSeeder implements CommandLineRunner {
 		NumberFormat formatter = new DecimalFormat("#0.00000");
 
 		long start = System.currentTimeMillis();
-		countrySeeder.run();
-		roleSeeder.run();
-//		addressSeeder.run();
-//		countactNumberSeeder.run();
-//		userSeeder.run();
-//		packageSeeder.run();
-//		invoiceSeeder.run();
-//		scheduledJobSeeder.run();
-		feeSeeder.run();
-//		billingSeeder.run();
-//        messageQueueSeeder.run();
-//		menuSeeder.run();
-//		menuItemSeeder.run();
-		idtypeSeeder.run();
+		//countrySeeder.run();
+		//roleSeeder.run();
+	    //addressSeeder.run();
+		//countactNumberSeeder.run();
+		//userSeeder.run();
+		//packageSeeder.run();
+		//invoiceSeeder.run();
+		//scheduledJobSeeder.run();
+		//feeSeeder.run();
+		//billingSeeder.run();
+        //messageQueueSeeder.run();
+		//menuSeeder.run();
+		//menuItemSeeder.run();
+	    //idtypeSeeder.run();
 		long end = System.currentTimeMillis();
 		logger.info("All  Seeder ran in " + formatter.format((end - start) / 1000d) + " seconds");
 
