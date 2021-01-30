@@ -86,6 +86,7 @@ public class EmailSchedule {
 				history.setStatus(JobStatus.Passed);
 
 				jobHistoryRepository.save(history);
+
 			}
 
 		} catch (Exception e) {

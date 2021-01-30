@@ -39,10 +39,43 @@ public class ScheduledJobSeeder {
 			scheduledJob3.setIsActive(true);
 			scheduledJob3.setTemplateName("resetpassword");
 			scheduledJob3.setType(JobType.EMAIL);
+			
+			ScheduledJob scheduledJob4 = new ScheduledJob();
+			scheduledJob4.setIsActive(true);
+			scheduledJob4.setTemplateName("customs");
+			scheduledJob4.setType(JobType.EMAIL);
+			
+			
+			ScheduledJob scheduledJob5 = new ScheduledJob();
+			scheduledJob5.setIsActive(true);
+			scheduledJob5.setTemplateName("delivery");
+			scheduledJob5.setType(JobType.EMAIL);
+			
+			
+			ScheduledJob scheduledJob6 = new ScheduledJob();
+			scheduledJob6.setIsActive(true);
+			scheduledJob6.setTemplateName("newpackage");
+			scheduledJob6.setType(JobType.EMAIL);
+			
+			
+			ScheduledJob scheduledJob7 = new ScheduledJob();
+			scheduledJob7.setIsActive(true);
+			scheduledJob7.setTemplateName("arrivedpackage");
+			scheduledJob7.setType(JobType.EMAIL);
+			
+			ScheduledJob scheduledJob8 = new ScheduledJob();
+			scheduledJob8.setIsActive(true);
+			scheduledJob8.setTemplateName("deliveryonisway");
+			scheduledJob8.setType(JobType.EMAIL);
 
 			list.add(scheduledJob);
 			list.add(scheduledJob2);
 			list.add(scheduledJob3);
+			list.add(scheduledJob4);
+			list.add(scheduledJob5);
+			list.add(scheduledJob6);
+			list.add(scheduledJob7);
+			list.add(scheduledJob8);
 
 			long end = System.currentTimeMillis();
 			scheduledJobRepository.saveAll(list);

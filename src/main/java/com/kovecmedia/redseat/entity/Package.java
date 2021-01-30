@@ -53,6 +53,10 @@ public class Package {
 	private java.sql.Timestamp updated_at;
 
 	private String updateBy;
+	
+	private double customFees;
+	
+	private boolean emailSent;
 
 	public Long getId() {
 		return id;
@@ -185,6 +189,22 @@ public class Package {
 	public Package() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public boolean isEmailSent() {
+		return emailSent;
+	}
+
+	public void setEmailSent(boolean emailSent) {
+		this.emailSent = emailSent;
+	}
+
+	public double getCustomFees() {
+		return customFees;
+	}
+
+	public void setCustomFees(double customFees) {
+		this.customFees = customFees;
 	}
 
 	

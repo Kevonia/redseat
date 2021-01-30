@@ -2,6 +2,7 @@ package com.kovecmedia.redseat.entity;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,6 +29,14 @@ public class Fee {
 	private double lowerLimit;
 
 	private double upperLimit;
+	
+	@Column(name = "created_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+
+	private java.sql.Timestamp created_at;
+
+	@Column(name = "updated_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+
+	private java.sql.Timestamp updated_at;
 
 	private FeeType type;
 

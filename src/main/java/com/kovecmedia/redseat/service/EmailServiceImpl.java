@@ -30,10 +30,12 @@ import org.thymeleaf.context.Context;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import com.kovecmedia.redseat.doa.BillingRepository;
+import com.kovecmedia.redseat.doa.DeliveryRepository;
 import com.kovecmedia.redseat.doa.FeesRepository;
 import com.kovecmedia.redseat.doa.ForgetPasswordRepository;
 import com.kovecmedia.redseat.doa.PackageRepository;
 import com.kovecmedia.redseat.entity.Billing;
+import com.kovecmedia.redseat.entity.Delivery;
 import com.kovecmedia.redseat.entity.Fee;
 import com.kovecmedia.redseat.entity.ForgetPassword;
 import com.kovecmedia.redseat.entity.Package;
@@ -61,6 +63,9 @@ public class EmailServiceImpl implements EmailService {
 
 	@Autowired
 	private FeesRepository feeRepository;
+	
+	@Autowired
+	private  DeliveryRepository deliveryRepository;
 
 	@Autowired
 	private org.thymeleaf.spring5.SpringTemplateEngine templateEngine;
@@ -108,6 +113,16 @@ public class EmailServiceImpl implements EmailService {
 
 		} else if (templateName.equals("billing")) {
 			sendBillingInvoice(user);
+		} else if (templateName.equals("customs")) {
+			sendCustomsMessage(user);
+		} else if (templateName.equals("delivery")) {
+			sendDelivery(user);
+		} else if (templateName.equals("deliveryonisway")) {
+			sendResetPassword(user);
+		} else if (templateName.equals("newpackage")) {
+			sendNewPackage(user);
+		} else if (templateName.equals("arrivedpackage")) {
+			sendResetPassword(user);
 		} else if (templateName.equals("resetpassword")) {
 			sendResetPassword(user);
 		}
@@ -118,7 +133,7 @@ public class EmailServiceImpl implements EmailService {
 	public void sendBillingInvoice(User user) throws MessagingException, IOException, DocumentException {
 
 		List<com.kovecmedia.redseat.entity.Package> packagelist = packageRepository.findByUserIdandLocation(user,
-				PackageLocation.WAREHOUSE);
+				PackageLocation.JAMAICA);
 
 		for (Package packageitem : packagelist) {
 
@@ -136,20 +151,17 @@ public class EmailServiceImpl implements EmailService {
 							&& packageitem.getWeight() >= item.getLowerLimit()) {
 						billingfees.add(item);
 					}
-						
+
 				}
 
 				billing.setFee(billingfees);
-				
+
 				billingRepository.save(billing);
 
 				processInvoice(user, billing);
-			
+
 				packageRepository.save(packageitem);
-				
-		
-			
-				
+
 			}
 		}
 
@@ -272,7 +284,7 @@ public class EmailServiceImpl implements EmailService {
 
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("name", forgetPassword.getUser().getName());
-			model.put("token", "http://localhost:8080/reset/" + forgetPassword.getToken());
+			model.put("token", "https://dashboard.redseatcourier.com/reset/" + forgetPassword.getToken());
 
 			mail.setProps(model);
 
@@ -290,6 +302,126 @@ public class EmailServiceImpl implements EmailService {
 
 			emailSender.send(message);
 		}
+
+	}
+
+	@Override
+	public void sendCustomsMessage(User user) throws MessagingException, IOException {
+		MimeMessage message = emailSender.createMimeMessage();
+		MimeMessageHelper helper = getEmailHelper(message);
+
+		Mail mail = new Mail();
+
+		mail.setFrom(SendingEmailAddress.SHIP.toString());
+		mail.setMailTo(user.getEmail());
+
+		mail.setSubject("Barrel ah Pack");
+
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("name", user.getName());
+		mail.setProps(model);
+
+		mail.setMailTo(user.getEmail());
+
+		Context context = new Context();
+		context.setVariables(mail.getProps());
+
+		String html = templateEngine.process("customs", context);
+
+		helper.setTo(mail.getMailTo());
+		helper.setText(html, true);
+		helper.setSubject(mail.getSubject());
+		helper.setFrom(mail.getFrom());
+
+		emailSender.send(message);
+
+	}
+
+	@Override
+	public void sendNewPackage(User user) throws MessagingException, IOException {
+		MimeMessage message = emailSender.createMimeMessage();
+		MimeMessageHelper helper = getEmailHelper(message);
+
+		List<com.kovecmedia.redseat.entity.Package> packagelist = packageRepository.findByUserIdandLocation(user,
+				PackageLocation.WAREHOUSE);
+
+		Mail mail = new Mail();
+
+		mail.setFrom(SendingEmailAddress.SHIP.toString());
+		mail.setMailTo(user.getEmail());
+
+		mail.setSubject("Barrel ah Pack");
+
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("name", user.getName());
+		model.put("courier", packagelist.get(0).getSeller());
+		model.put("trackingNo", packagelist.get(0).getTrackingNumber());
+		model.put("weight", packagelist.get(0).getWeight());
+		mail.setProps(model);
+
+		mail.setMailTo(user.getEmail());
+
+		Context context = new Context();
+		context.setVariables(mail.getProps());
+
+		String html = templateEngine.process("welcome", context);
+
+		helper.setTo(mail.getMailTo());
+		helper.setText(html, true);
+		helper.setSubject(mail.getSubject());
+		helper.setFrom(mail.getFrom());
+
+		emailSender.send(message);
+
+	}
+
+	@Override
+	public void sendDelivery(User user) throws MessagingException, IOException {
+		// TODO Auto-generated method stub
+		MimeMessage message = emailSender.createMimeMessage();
+		MimeMessageHelper helper = getEmailHelper(message);
+
+		Mail mail = new Mail();
+		
+		Delivery delivery = deliveryRepository.findByUser(user).get(0);
+		
+
+		mail.setFrom(SendingEmailAddress.SHIP.toString());
+		mail.setMailTo(user.getEmail());
+
+		mail.setSubject("Barrel ah Pack");
+
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("name", user.getName());
+		model.put("day", delivery.getUpdate_at());
+		model.put("signed", delivery.getSignedBy());
+		mail.setProps(model);
+
+		mail.setMailTo(user.getEmail());
+
+		Context context = new Context();
+		context.setVariables(mail.getProps());
+
+		String html = templateEngine.process("delivery", context);
+
+		helper.setTo(mail.getMailTo());
+		helper.setText(html, true);
+		helper.setSubject(mail.getSubject());
+		helper.setFrom(mail.getFrom());
+
+		emailSender.send(message);
+
+	}
+
+	@Override
+	public void sendArrivedPackage(User user) throws MessagingException, IOException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void sendDeliveryOnIsWay(User user) throws MessagingException, IOException {
+		// TODO Auto-generated method stub
 
 	}
 

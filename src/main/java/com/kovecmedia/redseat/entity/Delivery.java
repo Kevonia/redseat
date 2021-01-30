@@ -61,6 +61,9 @@ public class Delivery {
 	@JoinColumn(name = "userId")
 	private User user;
 	
+	
+	private String signedBy;
+	
 
 	public Long getId() {
 		return id;
@@ -156,6 +159,14 @@ public class Delivery {
 
 	public void setDeliveryAddress(String deliveryAddress) {
 		this.deliveryAddress = deliveryAddress;
+	}
+
+	public String getSignedBy() {
+		return signedBy;
+	}
+
+	public void setSignedBy(String signedBy) {
+		this.signedBy = signedBy;
 	}
 
 	
