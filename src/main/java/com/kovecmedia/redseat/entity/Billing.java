@@ -1,6 +1,5 @@
 package com.kovecmedia.redseat.entity;
 
-import java.sql.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -92,11 +91,6 @@ public class Billing {
 	public void setFee(Set<Fee> fee) {
 		Fees = fee;
 	}
-
-
-
-
-
 
 
 }

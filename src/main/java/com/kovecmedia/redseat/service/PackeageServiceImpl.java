@@ -23,13 +23,17 @@ public class PackeageServiceImpl implements PackegeService {
 	
 	@Override
 	public PackageInvoice getPacketByid(long id) {
-
+        
+		System.out.println(id);
+		
 		PackageInvoice packageInvoice = new PackageInvoice();
 		Package package1 =packageRepository.findById(id).orElse(null);
 		
-		packageInvoice.setPackageItem(package1);
-		packageInvoice.setInvoices(invoiceRepository.findByPackageId(package1));
-		packageInvoice.setBilling(billingRepository.findBypackageId(package1));
+		 packageInvoice.setPackageItem(package1);
+		 packageInvoice.setInvoices(invoiceRepository.findByPackageId(package1));
+		 packageInvoice.setBilling(billingRepository.findBypackageId(package1));
+		
+		
 		return  packageInvoice;
 	}
 
