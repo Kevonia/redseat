@@ -1,4 +1,5 @@
 package com.kovecmedia.redseat.payload.respond;
+
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,12 +9,11 @@ import com.kovecmedia.redseat.entity.Package;
 
 public class PackageInvoice {
 
-	
-	private Package  packageItem;
-	
-	private List<Invoice>  invoices;
-	
-	private Billing billing;
+	private Package packageItem;
+
+	private List<Invoice> invoices;
+
+	private List<Billing> billing;
 
 	public Package getPackageItem() {
 		return packageItem;
@@ -31,16 +31,13 @@ public class PackageInvoice {
 		this.invoices = invoices;
 	}
 
-	public Billing getBilling() {
+	public void setBilling(List<Billing> billing) {
+		this.billing = billing;
+
+	}
+
+	public List<Billing> getBilling() {
 		return billing;
 	}
 
-	public void setBilling(Billing billing) {
-		this.billing = billing;
-	}
-
-	
-
-	
-	
 }

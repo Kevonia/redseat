@@ -12,8 +12,11 @@ import org.springframework.data.jpa.repository.Query;
 public interface PackageRepository extends JpaRepository<Package, Long> {
 	List<Package> findByUserIdAndPreAlert(User user,boolean isPreAlert);
 
-	@Query("SELECT p from packages p where p.userId =:user and p.location =:location")
-	List<Package> findByUserIdandLocation(User user, PackageLocation location);
-
+	
+	List<Package> findByUserIdAndEmailSent(User user, boolean email_sent);
+    
+	Boolean existsByTrackingNumber(String trackno);
+	
+	List<Package> findByEmailSent(Boolean stauts);
 
 }

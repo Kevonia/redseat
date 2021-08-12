@@ -1,0 +1,97 @@
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+      <head>
+         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+         </meta>
+        
+      </head>
+      <body>
+         <hr class="line"/>
+         <hr class="line2"/>
+         <table>
+            <thead>
+               <tr>
+                  <th class="logo">  </th>
+                  <th class="qrcode"> <img th:src="${qrtop}"  style="width: 130px; max-width:130px"/>   </th>
+            
+               </tr>
+               
+            </thead>
+            <tbody>
+               <tr>
+                  <td >
+                     <span class="address-2" th:text="${package.localAddress}"> 
+                     </span>
+                     <span class="info" th:text="${package.localPhone +' '+ package.localEmail }">                  
+                     </span>
+                  </td>
+               </tr>
+               <tr>
+                  <td class="graytag">
+                     <span class="label">From:
+                     </span>
+                     
+                        <br />
+                       <div class="address" >
+                       <span  th:text="${ package.fromName }"> </span>
+                       <br />
+                         <span  th:text="${ package.fromAddressline1 }"> </span>
+                           <br />
+                         <span  th:text="${ package.fromAddressline2 }"> </span>
+                     </div>
+                     
+                  </td>
+                  <td class="graytag-2">
+                     <span class="label">To:
+                     </span>
+                   
+                      <div class="address" >
+                       <span  th:text="${package.toName}"> </span>
+                       <br />
+                         <span  th:text="${package.ToUser}"> </span>
+                     </div>
+                  </td>
+               </tr>
+               <tr>
+                  <td class="details">
+                     <span class="label">Package Desc:
+                     </span>
+                     <br />
+                     <span class="address"  th:text="${package.packageDescrtion}">
+                     
+                     </span>
+                  </td>
+               </tr>
+
+               <tr>
+                  <td >
+                     <span class="details-2">Seller:  <span class="address" th:text="${package.seller}"> 
+                     </span>
+                     </span>
+                      
+                  </td>
+               </tr>
+               <tr>
+                  <td >
+                     <span class="details-3">Weight:  <span class="address" th:text="${package.weigth + 'lbs'}">
+                    
+                     </span>
+                     </span>
+                  </td>
+               </tr>
+               <tr>
+                  <td >
+                     <span class="details-4">Date:
+                     <span class="address" th:text="  ${#dates.format(package.labelDate, 'dd-MMM-yyyy')} ">
+                  
+                     </span>
+                     </span>
+                  </td>
+               </tr>
+              
+               <td class="qrcode2"> <img th:src="${qrpackage}" style="width: 250px; max-width:100px"> </img>  </td>
+            </tbody>
+         </table>
+      </body>
+   </html>

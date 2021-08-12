@@ -1,8 +1,8 @@
 package com.kovecmedia.redseat.entity;
 
-import java.sql.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,7 +23,7 @@ public class Billing {
 	private String description;
 	private double value;
 	private BillingStatus status;
-	private Date updated;
+
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "package")
@@ -32,6 +32,15 @@ public class Billing {
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Fee> Fees;
 
+	
+	@Column(name = "created_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+
+	private java.sql.Timestamp created_at;
+
+	@Column(name = "Updated_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+
+	private java.sql.Timestamp Update_at;
+	
 
 	public Long getId() {
 		return id;
@@ -65,13 +74,7 @@ public class Billing {
 		this.status = status;
 	}
 
-	public Date getUpdated() {
-		return updated;
-	}
 
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
 
 	public Package getPackageId() {
 		return packageId;
@@ -88,11 +91,6 @@ public class Billing {
 	public void setFee(Set<Fee> fee) {
 		Fees = fee;
 	}
-
-
-
-
-
 
 
 }

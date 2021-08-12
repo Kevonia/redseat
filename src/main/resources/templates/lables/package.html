@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+
+   <head>
+
+      <style>
+       
+       .invoice-box{
+         max-width: 1250px;
+         margin: auto;
+         padding: 30px;
+         border: 1px solid #eee;
+         box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+         font-size: 16px;
+         line-height: 24px;
+         font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+         color: #555;
+       }
+       
+       .address{
+         font-family: Roboto;
+         font-style: normal;
+         font-weight: normal;
+         font-size: 26px;
+        text-align: center;
+     
+         }
+         .contact{
+         font-family: Roboto;
+         font-style: normal;
+         font-weight: normal;
+         font-size: 22px;
+         text-align: center;
+         }
+         .label{
+         font-family: Roboto;
+         font-style: normal;
+         font-weight: 300;
+         font-size: 16px;
+         padding-left: 50px;
+         }
+         .label2{
+         font-family: Roboto;
+         font-style: normal;
+         font-weight: 500;
+         font-size: 19px;
+         }
+         
+         .qrcode{
+          
+            font-size: 14px;
+         }
+      </style>
+   </head>
+   <body>
+     <div class="invoice-box">
+         <table cellpadding="0" cellspacing="0"  style="width: 100%;">
+
+         <tr>
+            <th><img th:src="${logo}" width="350px" height="150px" /></th>
+              <th class="qrcode" > <img th:src="${qrtop}"  style="width: 130px; max-width:130px"/>   </th>
+         </tr>
+         <tr>
+            <td colspan="2" class="address" th:text="${package.localAddress}"></td>
+         </tr>
+         <tr>
+           <td  class="contact"  colspan="2"  th:text="${package.localPhone +' '+ package.localEmail}"> </td> 
+         </tr>
+            <td>
+               <span class="label2">From:
+               </span>
+               <br />
+               <div class="label" >
+                 
+                       <span  th:text="${ package.fromName }"> </span>
+                       <br />
+                         <span  th:text="${ package.fromAddressline1 }"> </span>
+                           <br />
+                         <span  th:text="${ package.fromAddressline2 }"> </span>
+                  
+                     
+               </div>
+            </td>
+              <td>
+               <span class="label2">To:
+               </span>
+               <br />
+               <div class="label" >
+              
+                       <span  th:text="${package.toName}"> </span>
+                       <br />
+                         <span  th:text="${package.ToUser}"> </span>
+                    
+               </div>
+            </td>
+             <tr>
+           <td   colspan="2"  th:text="${package.localPhone +' '+ package.localEmail}">   </td> 
+         </tr>
+               <tr>
+           <td    colspan="2"  th:text="${package.localPhone +' '+ package.localEmail}"> </td> 
+         </tr>
+            <tr>
+           <td    colspan="2"  th:text="${package.localPhone +' '+ package.localEmail}"> </td> 
+         </tr>
+      </table>
+      </div>
+   </body>
+</html>

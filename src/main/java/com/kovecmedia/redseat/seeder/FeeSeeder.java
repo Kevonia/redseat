@@ -35,12 +35,12 @@ public class FeeSeeder {
 				Fee fee = new Fee();
 				fee.setLowerLimit(i);
 				fee.setUpperLimit(i + 0.99);
-				fee.setName("Red Seat Forwarding - " + Integer.toString(i));
+				fee.setName("Freight Forwarding - Wgt " + Integer.toString(i) + " lb");
 				fee.setValueJmd(startValue);
 				fee.setValueUsd(startValueUSD);
 				fee.setType(FeeType.Shipping);
 
-				list.add(fee);
+		 		list.add(fee);
 
 				if (i == 1) {
 					startValue = startValue + 450;
@@ -48,7 +48,7 @@ public class FeeSeeder {
 				} else if (i < 10) {
 					startValueUSD = startValueUSD + 3;
 					startValue = startValue + 350;
-				} else if (i < 21 && i >= 10) {
+				} else if (i < 20 && i >= 10) {
 					startValue = startValue + 300;
 					startValueUSD = startValueUSD + 2.5;
 				} else {
