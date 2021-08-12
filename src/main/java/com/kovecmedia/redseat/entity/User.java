@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@SequenceGenerator(name="user_id_seq", initialValue=100, allocationSize=1)
+@SequenceGenerator(name="user_id_seq", initialValue=883, allocationSize=1)
 public class User {
 	@Id
 	 @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="user_id_seq")
@@ -145,7 +145,7 @@ public class User {
 	}
 
 	public Long getPoints() {
-		return points;
+		return this.points;
 	}
 
 	public void setPoints(Long points) {

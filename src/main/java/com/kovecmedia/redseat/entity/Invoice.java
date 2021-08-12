@@ -26,7 +26,7 @@ public class Invoice {
 	private String type;
 	
 
-	@Column(length=100000)
+	@Column(length=Integer.MAX_VALUE)
 	private byte[] data;
 	
 	@ManyToOne(fetch = FetchType.EAGER)

@@ -69,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable()
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.authorizeRequests().antMatchers("/api/auth/**","/user/checkuser/**","/api/password/**").permitAll()
+			.authorizeRequests().antMatchers("/api/auth/**","/user/checkuser/**","/v2/**","/api/password/**","/api/testimonial/**").permitAll()
 			.antMatchers("/api/test/**").permitAll()
 			.anyRequest().authenticated();
 
@@ -79,9 +79,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	  @Bean
 	    CorsConfigurationSource corsConfigurationSource() {
 	        CorsConfiguration configuration = new CorsConfiguration();
-	        configuration.setAllowedOrigins(Arrays.asList("*"));
+	        configuration.applyPermitDefaultValues();
+	        configuration.setAllowedOrigins(Arrays.asList("https://dashboard.rscja.com","http://dashboard.rscja.com","https://rscja.com","https://rscja.com","http://localhost:8081","http://localhost:8080"));
 	        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","PATCH","DELETE"));
-	        configuration.addAllowedHeader("*");
+	        configuration.setAllowCredentials(true);
+	        configuration.setMaxAge((long) 366000);
+	        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Access-Control-Allow-Origin",
+	                "Access-Control-Allow-Headers", "X-Requested-With", "requestId", "Correlation-Id"));
 	        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 	        source.registerCorsConfiguration("/**", configuration);
 	        return source;

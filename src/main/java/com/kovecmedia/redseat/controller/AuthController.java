@@ -111,7 +111,7 @@ public class AuthController {
 
 		try {
 			userservice.addUser(signUpRequest, roles);
-			System.out.println("Test");
+			
 		} catch (Exception e) {
 
                 

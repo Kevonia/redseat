@@ -23,11 +23,14 @@ public class Package {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+    
+	@Column(unique=true)
 	private String trackingNumber;
 
 	private String description;
 
+	private String reason;
+	
 	private String seller;
 
 	private long weight;
@@ -37,6 +40,8 @@ public class Package {
 	private PackagesStatus status;
 
 	private PackageLocation location;
+	
+	private String invoceUrl;
 	
 	private boolean preAlert;
 
@@ -54,9 +59,13 @@ public class Package {
 
 	private String updateBy;
 	
-	private double customFees;
 	
+	@Column(name = "email_sent", insertable = true, updatable = true, nullable = true,columnDefinition = "boolean DEFAULT false")
 	private boolean emailSent;
+	
+	@Column(insertable = true, updatable = true, columnDefinition = "string DEFAULT ''")
+	private String packageImg;
+	
 
 	public Long getId() {
 		return id;
@@ -199,14 +208,49 @@ public class Package {
 		this.emailSent = emailSent;
 	}
 
-	public double getCustomFees() {
-		return customFees;
+	public String getPackageImg() {
+		return packageImg;
 	}
 
-	public void setCustomFees(double customFees) {
-		this.customFees = customFees;
+	public void setPackageImg(String packageImg) {
+		this.packageImg = packageImg;
 	}
 
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+
+
+	public String getInvoceUrl() {
+		return invoceUrl;
+	}
+
+	public void setInvoceUrl(String invoceUrl) {
+		this.invoceUrl = invoceUrl;
+	}
+
+	public java.sql.Timestamp getUpdated_at() {
+		return updated_at;
+	}
+
+	public void setUpdated_at(java.sql.Timestamp updated_at) {
+		this.updated_at = updated_at;
+	}
+
+	public String getUpdateBy() {
+		return updateBy;
+	}
+
+	public void setUpdateBy(String updateBy) {
+		this.updateBy = updateBy;
+	}
+
+	
 	
 	
 }

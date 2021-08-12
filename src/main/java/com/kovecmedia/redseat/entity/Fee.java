@@ -13,7 +13,8 @@ import javax.persistence.Table;
 
 import com.kovecmedia.redseat.model.FeeType;
 
-@Entity
+
+@Entity(name = "fees")
 @Table(name = "fees")
 public class Fee {
 	@Id

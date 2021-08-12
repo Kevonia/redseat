@@ -2,6 +2,7 @@ package com.kovecmedia.redseat.entity;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,6 +30,9 @@ public class MessageQueue {
 	private ScheduledJob scheduledId;
 	private Date rundate;
 	private MessageStatus status;
+	
+	@Column(name = "package_id", insertable = true, columnDefinition = "BIGINT DEFAULT 0")
+	private Long packageID;
 
 	public Long getId() {
 		return id;
@@ -76,6 +80,14 @@ public class MessageQueue {
 
 	public void setStatus(MessageStatus status) {
 		this.status = status;
+	}
+
+	public Long getPackageID() {
+		return packageID;
+	}
+
+	public void setPackageID(Long packageID) {
+		this.packageID = packageID;
 	}
 
 }

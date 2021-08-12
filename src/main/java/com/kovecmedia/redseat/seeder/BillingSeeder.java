@@ -54,7 +54,6 @@ public class BillingSeeder {
 					billing.setPackageId(value.get());
 					billing.setValue(faker.number().randomDouble(2, 100, 10000));
 					billing.setFee(billingfees);
-					billing.setUpdated(date);
 					list.add(billing);
 				}
 		

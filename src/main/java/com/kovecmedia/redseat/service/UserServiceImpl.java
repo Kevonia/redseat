@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
 			address.setAddressline1(userRegistration.getAddressLine1());
 			address.setAddressline2(userRegistration.getAddressLine2());
 			address.setZipcode(userRegistration.getZipCode());
-			address.setCountry(countryrepository.getOne((long) 1));
+			address.setCountry(countryrepository.getOne((long) 111));
 
 			addresslist.add(address);
 
