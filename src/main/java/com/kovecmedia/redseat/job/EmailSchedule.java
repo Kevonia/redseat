@@ -136,7 +136,7 @@ public class EmailSchedule {
 		// TODO Auto-generated method stub
 		User user =userRepository.findById(package1.getUserId().getId()).get();
 		
-		Long point = (package1.getWeight()>=POINTSLIMIT?POINTSLIMIT:package1.getWeight());
+		Long point = (package1.getWeight()>=POINTSLIMIT?POINTSLIMIT:package1.getWeight()) + user.getPoints();
 		
 		user.setPoints(point);
 		
@@ -149,8 +149,7 @@ public class EmailSchedule {
 		for (Package items : packages) {
                   
 			 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-	    	  
-			  
+			
 		       if(TimeUnit.MILLISECONDS.toMinutes(timestamp.getTime() - items.getUpdate_at().getTime()) <=5 ) {
 		    	
 		    	   logger.info(TimeUnit.MILLISECONDS.toMinutes(timestamp.getTime() - items.getUpdate_at().getTime())+" "+items.getId() );
@@ -162,6 +161,7 @@ public class EmailSchedule {
 				if(items.getStatus()==PackagesStatus.Received_AT_Warehouse) {
 					id= 7L;
 				}else if(items.getStatus()==PackagesStatus.Ready_For_Pickup_Delivery){
+					logger.info("Ajusting  Points for"+items.getUserid().getName() );
 					addPoint(items);
 					id= 8L;
 				}else if(items.getStatus()==PackagesStatus.Processing_by_customs){
