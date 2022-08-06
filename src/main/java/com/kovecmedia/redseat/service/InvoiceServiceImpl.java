@@ -29,8 +29,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 			invoice.setUpdate_by(invoiceRequest.getUsername());
 			invoice.setData(decodedByte);
 			invoice.setType(invoiceRequest.getType());
-			invoice.setPackageId(packageRepository.getOne(invoiceRequest.getPackageid()));
-
+			invoice.setPackageId(packageRepository.getOne(invoiceRequest.getPackageId()));
+             System.out.println(invoiceRequest.getPackageId());
 			invoiceRepository.save(invoice);
 		} catch (Exception e) {
 			e.printStackTrace();

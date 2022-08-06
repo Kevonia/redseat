@@ -1,5 +1,6 @@
 package com.kovecmedia.redseat.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,8 +30,8 @@ public class Invoice {
 	@Column(length=Integer.MAX_VALUE)
 	private byte[] data;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "packageId")
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+	@JoinColumn(name = "packageId" )
 	private Package packageId;
     
 	@Column(name = "created_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")

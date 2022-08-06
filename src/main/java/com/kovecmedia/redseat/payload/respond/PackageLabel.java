@@ -4,7 +4,7 @@ public class PackageLabel {
 
 	String  packageDescrtion;
 	String  seller;
-	long  weigth;
+	double  weigth;
 	java.util.Date labelDate;
 	
 	String localAddress;
@@ -35,10 +35,10 @@ public class PackageLabel {
 	public void setSeller(String seller) {
 		this.seller = seller;
 	}
-	public long getWeigth() {
+	public double getWeigth() {
 		return weigth;
 	}
-	public void setWeigth(long weigth) {
+	public void setWeigth(double weigth) {
 		this.weigth = weigth;
 	}
 	public java.util.Date getLabelDate() {

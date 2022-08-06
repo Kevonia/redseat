@@ -36,7 +36,7 @@ public class BarCodeServiceImpl  {
 		
 		label.setPackageDescrtion(package1.getDescription());
 		label.setSeller(package1.getSeller());
-		label.setWeigth(package1.getWeight());
+		label.setWeigth(package1.getWeight()); 
 		label.setLabelDate(new Date());
 		
 		label.setLocalAddress("17 Campbell Blvd, Kingston 11");

@@ -3,6 +3,7 @@ package com.kovecmedia.redseat.payload.respond;
 import java.util.List;
 
 import com.kovecmedia.redseat.entity.Package;
+import com.kovecmedia.redseat.entity.Role;
 
 public class UserPackages {
 	
@@ -10,6 +11,8 @@ public class UserPackages {
 	private String name;
 	private long id;
 	private long points;
+	
+	private long role;
 	
 	private List<Package> packageslist;
 	
@@ -36,6 +39,12 @@ public class UserPackages {
 	}
 	public void setPoints(long points) {
 		this.points = points;
+	}
+	public long getRole() {
+		return role;
+	}
+	public void setRole(long role) {
+		this.role = role;
 	}
 	
 	

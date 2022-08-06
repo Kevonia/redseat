@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -37,9 +38,12 @@ import com.kovecmedia.redseat.payload.request.UserRegistration;
 import com.kovecmedia.redseat.payload.respond.UserPackages;
 import com.kovecmedia.redseat.security.services.UserDetailsImpl;
 
+
 @Service
 public class UserServiceImpl implements UserService {
-
+	
+	static final long REF_POINT = 50;
+	
 	@Autowired
 	private UserRepository userRepository;
 
@@ -70,8 +74,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public void addUser(UserRegistration userRegistration, Set<Role> roles) throws Exception {
+	public void addUser(UserRegistration userRegistration, Set<Role> roles,String apiKey) throws Exception {
 		User user = new User();
+		Optional<User> currentUser = Optional.empty();
 		Address address = new Address();
 		ContactNumber contactNumber = new ContactNumber();
 		Set<Address> addresslist = new HashSet<>();
@@ -79,12 +84,17 @@ public class UserServiceImpl implements UserService {
 		Set<ContactNumber> contactlist = new HashSet<>();
 
 		Set<Role> rolelist = new HashSet<>();
+		
+		currentUser =userRepository.findById(userRegistration.getRefCode());
+	 
 		try {
 			address.setAddressline1(userRegistration.getAddressLine1());
 			address.setAddressline2(userRegistration.getAddressLine2());
 			address.setZipcode(userRegistration.getZipCode());
 			address.setCountry(countryrepository.getOne((long) 111));
-
+             
+			SendInBule sendInBule  = new SendInBule();
+			
 			addresslist.add(address);
 
 			contactNumber.setIsprimary(true);
@@ -102,16 +112,35 @@ public class UserServiceImpl implements UserService {
 			user.setPassword(userRegistration.getPassword());
 			user.setName(userRegistration.getName());
 			user.setEmail(userRegistration.getEmail());
-			user.setPoints((long) 0);
+			user.setRefCode(userRegistration.getRefCode());
+			
+			user.setPoints( (long) 0);
+			
+			if(currentUser.isPresent()) {
+				
+				user.setPoints(REF_POINT);
+				
+				User cUser = currentUser.get();
+				long cuurentpoints =cUser.getPoints();
+				cUser.setPoints(cuurentpoints + REF_POINT );
+				userRepository.save(cUser);
+					
+ 			}
+			
+			
+			
+			user.setRefCode(userRegistration.getRefCode());
 			addressRepository.save(address);
 			contactnumberepository.save(contactNumber);
-
+ 			
 			userRepository.save(user);
-
-			messageQueue.setStatus(MessageStatus.NOTSENT);
-			messageQueue.setScheduledId(scheduledJobRepository.getOne((long) 1));
-			messageQueue.setEmail(userRegistration.getEmail());
-			messageQueueRepository.save(messageQueue);
+	
+		   sendInBule.addContact(userRepository.findByEmail(user.getEmail()).get(),apiKey);
+			
+		    messageQueue.setStatus(MessageStatus.NOTSENT);
+		    messageQueue.setScheduledId(scheduledJobRepository.getOne((long) 1));
+		    messageQueue.setEmail(userRegistration.getEmail());
+		    messageQueueRepository.save(messageQueue);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -132,7 +161,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserPackages getUserPaakages(long id) {
+	public UserPackages getUserPakages(long id) {
 
 		User tempuser = new User();
 		tempuser = userRepository.getOne(id);
@@ -140,8 +169,9 @@ public class UserServiceImpl implements UserService {
 		userPackages.setId(id);
 		userPackages.setName(tempuser.getName());
 		userPackages.setPoints(tempuser.getPoints());
-		userPackages.setPacklist(packageRepository.findByUserIdAndPreAlert((userRepository.getOne((long) id)), false));
-
+		userPackages.setPacklist(packageRepository.findByUserId((userRepository.getOne((long) id))));
+		
+		//userPackages.setRole(tempuser.getRoles().iterator().next().getId());
 		return userPackages;
 	}
 
@@ -257,5 +287,7 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(user2);
          return user;
 	}
+
+
 
 }

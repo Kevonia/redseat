@@ -339,7 +339,7 @@ public class EmailServiceImpl implements EmailService {
 				model.put("name", user.getName());
 				model.put("courier", packagelist.getSeller());
 				model.put("trackingnumber", packagelist.getTrackingNumber());
-				model.put("weight", packagelist.getWeight());
+				model.put("weight", Math.ceil(packagelist.getWeight()));
 				model.put("description", packagelist.getDescription());
 				model.put("value", packagelist.getValue());
 				mail.setProps(model);
@@ -392,7 +392,7 @@ public class EmailServiceImpl implements EmailService {
 		model.put("name", user.getName());
 		model.put("courier", packagelist.getSeller());
 		model.put("trackingnumber", packagelist.getTrackingNumber());
-		model.put("weight", packagelist.getWeight());
+		model.put("weight", Math.ceil(packagelist.getWeight()));
 		model.put("description", packagelist.getDescription());
 		model.put("value", packagelist.getValue());
 	

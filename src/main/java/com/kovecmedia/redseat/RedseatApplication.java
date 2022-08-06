@@ -8,11 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class RedseatApplication {
 
-	
 	public static void main(String[] args) {
 		SpringApplication.run(RedseatApplication.class, args);
-	    
-	
 	}
-
 }

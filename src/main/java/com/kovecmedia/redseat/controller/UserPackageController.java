@@ -27,7 +27,7 @@ public class UserPackageController {
 	@GetMapping(value = "/{id}", produces = "application/json")
 	public UserPackages getbyId(@PathVariable long id) {
 		UserPackages userPackages = new UserPackages();
-		userPackages = userservice.getUserPaakages(id);
+		userPackages = userservice.getUserPakages(id);
 		logger.info(userPackages.toString());
 		return userPackages;
 	}

@@ -16,10 +16,10 @@ class UserServiceTest {
 	@Test
 	public void myTest() throws Exception {
 
-		User user = new User("Kevonia", "Kevonia123@gmail.com", "Kevonia", null, null, null);
-
-		UserService US = new UserServiceImpl();
-	
+//		User user = new User("Kevonia", "Kevonia123@gmail.com", "Kevonia", null, null, null);
+//
+//		UserService US = new UserServiceImpl();
+//	
 
 	}
 

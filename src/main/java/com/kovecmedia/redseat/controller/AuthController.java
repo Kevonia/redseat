@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -53,6 +54,10 @@ public class AuthController {
 
 	@Autowired
 	UserService userservice;
+	
+	
+	@Value("${sendinBuleKey}") 
+	private String papiKey;
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -107,10 +112,9 @@ public class AuthController {
 				}
 			});
 		}
-         
 
 		try {
-			userservice.addUser(signUpRequest, roles);
+			userservice.addUser(signUpRequest, roles,papiKey);
 			
 		} catch (Exception e) {
 

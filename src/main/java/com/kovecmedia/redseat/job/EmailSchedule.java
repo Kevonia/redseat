@@ -47,16 +47,14 @@ public class EmailSchedule {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private PackageRepository packageepository;
-	
+
 	@Autowired
 	private ScheduleRepository scheduleRepository;
-	
-	long POINTSLIMIT =10;
-	
-	
+
+	long POINTSLIMIT = 10;
 
 	@Scheduled(fixedDelay = 300000) // 5 minutes
 	public void runSchedule() throws MessagingException, IOException {
@@ -67,42 +65,42 @@ public class EmailSchedule {
 		java.sql.Time time = new java.sql.Time(millis);
 		history.setRundate(date);
 		history.setRuntime(time);
-		
+
 		populatedQueueRepository();
 		history.setStatus(JobStatus.Rnuning);
-         
+
 		try {
 
 			List<MessageQueue> messages = messageQueueRepository.findByStatus(MessageStatus.NOTSENT);
-			
+
 			if (messages != null) {
 				jobHistoryRepository.save(history);
 
 				logger.info("Welcome Email Job Stated");
 
 				for (MessageQueue message : messages) {
-					User user = userRepository.findByEmail(message.getEmail()).get();
+					logger.info(message.getEmail());
+				
 					try {
+						User user = userRepository.findByEmail(message.getEmail()).get();
+						if (message.getPackageID() != null) {
+							long ID = message.getPackageID();
+							emailService.sendTemplate(user, message.getScheduledId().getTemplateName(), ID);
+						} else {
+							emailService.sendTemplate(user, message.getScheduledId().getTemplateName(), 0);
+						}
+
+						message.setStatus(MessageStatus.SENT);
+						message.setRundate(date);
+						messageQueueRepository.save(message);
 						Thread.sleep(10000);
 					} catch (InterruptedException ex) {
-						
+
 						Thread.currentThread().interrupt();
 						return;
 					}
-					
-		          
-		            
-		            if(message.getPackageID() != null) {
-		            	long ID = message.getPackageID();
-		            	emailService.sendTemplate(user, message.getScheduledId().getTemplateName(),ID);
-		            }else {
-		            	emailService.sendTemplate(user, message.getScheduledId().getTemplateName(),0);
-		            }
-					
-					
-					message.setStatus(MessageStatus.SENT);
-					message.setRundate(date);
-					messageQueueRepository.save(message);
+
+				
 
 				}
 				millis = System.currentTimeMillis();
@@ -131,53 +129,60 @@ public class EmailSchedule {
 
 		logger.info("Welcome Email Job End");
 	}
-	
+
 	public void addPoint(Package package1) {
 		// TODO Auto-generated method stub
-		User user =userRepository.findById(package1.getUserId().getId()).get();
+		User user = userRepository.findById(package1.getUserId().getId()).get();
+
+		long point = 0;
+		long temppoint = user.getPoints();
+		logger.info(temppoint + "Points for "+package1.getUserId().getName());
+		if (package1.getWeight() >= POINTSLIMIT) {
+			point = POINTSLIMIT;
+		} else {
+			point = (long) package1.getWeight();
+		}
+          
+		logger.info("Adding" + point + "Points to "+package1.getUserId().getName());
 		
-		Long point = (package1.getWeight()>=POINTSLIMIT?POINTSLIMIT:package1.getWeight()) + user.getPoints();
-		
-		user.setPoints(point);
-		
+		point =point + temppoint;
+		user.setPoints(point  );
+
 		userRepository.save(user);
 	}
-	
+
 	public void populatedQueueRepository() {
 		List<Package> packages = packageepository.findByEmailSent(false);
 		logger.info("populated Message Queue");
 		for (Package items : packages) {
-                  
-			 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-			
-		       if(TimeUnit.MILLISECONDS.toMinutes(timestamp.getTime() - items.getUpdate_at().getTime()) <=5 ) {
-		    	
-		    	   logger.info(TimeUnit.MILLISECONDS.toMinutes(timestamp.getTime() - items.getUpdate_at().getTime())+" "+items.getId() );
-			    	
-		   		MessageQueue queue = new  MessageQueue();
+
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+			if (TimeUnit.MILLISECONDS.toMinutes(timestamp.getTime() - items.getUpdate_at().getTime()) <= 5) {
+
+				logger.info(TimeUnit.MILLISECONDS.toMinutes(timestamp.getTime() - items.getUpdate_at().getTime()) + " "
+						+ items.getId());
+
+				MessageQueue queue = new MessageQueue();
 				ScheduledJob scheduledId = new ScheduledJob();
-				long id=1l;
-				
-				if(items.getStatus()==PackagesStatus.Received_AT_Warehouse) {
-					id= 7L;
-				}else if(items.getStatus()==PackagesStatus.Ready_For_Pickup_Delivery){
-					logger.info("Ajusting  Points for"+items.getUserid().getName() );
+				long id = 1l;
+
+				if (items.getStatus() == PackagesStatus.Received_AT_Warehouse) {
+					id = 7L;
+				} else if (items.getStatus() == PackagesStatus.Delivered || items.getStatus() ==  PackagesStatus.Collected || items.getStatus() ==  PackagesStatus.PickedUp ) {
+					logger.info("Ajusting  Points for" + items.getUserid().getName());
 					addPoint(items);
-					id= 8L;
-				}else if(items.getStatus()==PackagesStatus.Processing_by_customs){
-					id= 5L;
-				}
-				else if(items.getStatus()==PackagesStatus.Pending){
-					id= 10L;
-				}
-				else if(items.getStatus()==PackagesStatus.Delayed){
-					id= 11L;
-				}
-				else {
+					id = 8L;
+				} else if (items.getStatus() == PackagesStatus.Processing_by_customs) {
+					id = 5L;
+				} else if (items.getStatus() == PackagesStatus.Pending) {
+					id = 10L;
+				} else if (items.getStatus() == PackagesStatus.Delayed) {
+					id = 11L;
+				} else {
 					break;
 				}
-				
-				
+
 				queue.setEmail(items.getUserid().getEmail());
 				queue.setPhonenumber(null);
 				queue.setRundate(null);
@@ -185,9 +190,9 @@ public class EmailSchedule {
 				queue.setStatus(MessageStatus.NOTSENT);
 				queue.setPackageID(items.getId());
 				messageQueueRepository.save(queue);
-				
-		       }
-			 
+
+			}
+
 		}
 	}
 

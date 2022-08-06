@@ -16,9 +16,20 @@ public class UserRegistration {
 
 	private String zipCode;
 	
-	 private Set<String> role;
+	private Set<String> role;
+	
+	private long refCode;
+
+	public long getRefCode() {
+		return refCode;
+	}
+
+	public void setRefCode(long refCode) {
+		this.refCode = refCode;
+	}
 
 	public UserRegistration() {
+		
 	}
 
 	public UserRegistration(String username, String password, String passwordConfirmation, String phone,
@@ -32,6 +43,7 @@ public class UserRegistration {
 		this.addressLine2 = addressline2;
 		this.zipCode = zipcode;
 		this.email = email;
+		
 	}
 
 	public String getName() {

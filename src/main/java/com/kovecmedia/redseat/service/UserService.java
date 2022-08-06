@@ -19,14 +19,14 @@ public interface UserService {
 
 	public List<User> getAllUsers();
 
-	public UserPackages getUserPaakages(long id);
+	public UserPackages getUserPakages(long id);
 
 	UserDetails loadUserByEmail(String email) throws UsernameNotFoundException;
 
 	Boolean existsByEmail(String email);
 
 	@Transactional
-	void addUser(UserRegistration userRegistration, Set<Role> roles) throws Exception;
+	void addUser(UserRegistration userRegistration, Set<Role> roles,String papiKey) throws Exception;
 
 	@Transactional
 	void resetPassword(String email) throws UsernameNotFoundException;

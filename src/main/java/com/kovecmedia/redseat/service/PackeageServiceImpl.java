@@ -55,16 +55,18 @@ public class PackeageServiceImpl implements PackegeService {
 
 	@Override
 	@Transactional
-	public void userPoint(Package package1, long point) throws Exception {	
+	public void userPoint(long PackageID, long point) throws Exception {	
 		try {
 			long userPoint=0;
 			long pointVlaue=(point*10);
+			
+			Package package1 = packageRepository.findById(PackageID).orElse(null);
 			
 			 User user =userRepository.findById(package1.getUserid().getId()).get();
 			 
 			 Billing billing= (billingRepository.findBypackageId(package1).get(0));
 			 long newfee =(long) (billing.getValue() - pointVlaue);
-			
+			 billing.setValue(newfee);
 			userPoint =user.getPoints()  - point;
 			
 			userRepository.save(user);
@@ -76,6 +78,21 @@ public class PackeageServiceImpl implements PackegeService {
 
 		}
 		
+	}
+
+	@Override
+	public Package edit(Package package1) {
+		// TODO Auto-generated method stub
+		
+		packageRepository.save(package1);
+		
+		return null;
+	}
+
+	@Override
+	public long getValueByUser(long id) {
+		
+		return packageRepository.getValuebyUser(id);
 	}
 
 

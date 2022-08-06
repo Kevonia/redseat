@@ -2,6 +2,7 @@ package com.kovecmedia.redseat.entity;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,7 +26,7 @@ public class Billing {
 	private BillingStatus status;
 
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER ,cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "package")
 	private Package packageId;
 

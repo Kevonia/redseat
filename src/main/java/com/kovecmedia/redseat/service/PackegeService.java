@@ -8,6 +8,8 @@ public interface PackegeService {
 
 	 PackageInvoice getPacketByid(long id);
 	 Package add(Package package1);
+	 Package edit(Package package1);
+	 long getValueByUser(long id);
 		@Transactional
-	 void userPoint(Package package1,long point) throws Exception;
+	 void userPoint(long packageID,long point) throws Exception;
 }

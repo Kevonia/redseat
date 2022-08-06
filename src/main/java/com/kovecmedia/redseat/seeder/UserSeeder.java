@@ -48,7 +48,7 @@ public class UserSeeder {
 			user.setEmail("mikhailramsay@gmail.com");
 			user.setPassword("testpassword");
 	
-			user.setUpdate_by(UpdateBy.System.name());
+			user.setUpdateBy(UpdateBy.System.name());
 			
 			
 			long start = System.currentTimeMillis();

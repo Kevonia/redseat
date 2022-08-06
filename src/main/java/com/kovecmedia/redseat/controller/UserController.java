@@ -11,18 +11,20 @@ import com.kovecmedia.redseat.service.UserService;
 
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserController {
 
 	@Autowired
 	UserService userservice;
 
+	
 	@GetMapping(value = "/{id}", produces = "application/json")
 	public User getbyId(@PathVariable long id) {
 		User user = new User();
 		user = userservice.getUser(id);
 		return user;
 	}
+	
 	
 	@GetMapping(value = "/checkuser/{email}/",produces = "application/json" )
 	public Boolean existsByEmail(@PathVariable String email) {

@@ -1,6 +1,7 @@
 package com.kovecmedia.redseat.payload.request;
 
 public class InvoiceRequest {
+
 	private String base64;
 	private String name;
 	private String type;
@@ -31,10 +32,10 @@ public class InvoiceRequest {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public long getPackageid() {
+	public long getPackageId() {
 		return packageid;
 	}
-	public void setPackageid(long packageid) {
+	public void setPackageId(long packageid) {
 		this.packageid = packageid;
 	}
 

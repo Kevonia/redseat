@@ -1,6 +1,23 @@
 package com.kovecmedia.redseat.entity;
 
-import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Set;
+
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -8,7 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -18,11 +34,11 @@ public class User {
 	 @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="user_id_seq")
 	private Long id;
 
-	@Column(name = "points", insertable = false, columnDefinition = "BIGINT DEFAULT 0")
+	@Column(name = "points", insertable = true, columnDefinition = "BIGINT DEFAULT 0")
 	private Long points;
 
 	private String name;
-
+	@JsonIgnore
 	private String password;
 
 	@Column(name = "isActive", insertable = false, updatable = true, columnDefinition = "boolean DEFAULT true")
@@ -31,13 +47,18 @@ public class User {
 	@Column(unique = true)
 	private String email;
 
+	@Column(name = "isCustomer")
+	private Boolean isCustomer;
+    
+	@JsonIgnore
 	@Transient
 	private String passwordConfirm;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Role> roles;
 
 	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "users_phone",joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "contactnumber_id") })
 	private Set<ContactNumber> phone;
 
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -45,13 +66,41 @@ public class User {
 
 	@Column(name = "created_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 
-	private java.sql.Timestamp created_at;
+	private java.sql.Timestamp createdAt;
 
 	@Column(name = "updated_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 
-	private java.sql.Timestamp updated_at;
+	private java.sql.Timestamp updatedAt;
 
-	private String Update_by;
+	private String updateBy;
+	
+	private Long refCode;
+
+	public Long getRefCode() {
+		return refCode;
+	}
+
+	public void setRefCode(Long refCode) {
+		this.refCode = refCode;
+	}
+
+	public String getUpdateBy() {
+		return updateBy;
+	}
+
+	public void setUpdateBy(String updateBy) {
+		this.updateBy = updateBy;
+	}
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "Shipments")
+	private  Set<Shipment> Shipments;
+	
+	
+	@ManyToOne(fetch = FetchType.EAGER )
+	@JoinColumn(name = "groupId")
+	private Group groupId;
+
 
 	public Long getId() {
 		return id;
@@ -120,29 +169,7 @@ public class User {
 		this.address = address;
 	}
 
-	public java.sql.Timestamp getCreated_at() {
-		return created_at;
-	}
 
-	public void setCreated_at(java.sql.Timestamp created_at) {
-		this.created_at = created_at;
-	}
-
-	public java.sql.Timestamp getUpdate_at() {
-		return updated_at;
-	}
-
-	public void setUpdate_at(java.sql.Timestamp update_at) {
-		updated_at = update_at;
-	}
-
-	public String getUpdate_by() {
-		return Update_by;
-	}
-
-	public void setUpdate_by(String update_by) {
-		Update_by = update_by;
-	}
 
 	public Long getPoints() {
 		return this.points;
@@ -150,6 +177,10 @@ public class User {
 
 	public void setPoints(Long points) {
 		this.points = points;
+	}
+	
+	public void addPoints(Long points) {
+		this.points = points + this.points;
 	}
 
 	@JsonIgnore
@@ -161,16 +192,41 @@ public class User {
 		this.isActive = isActive;
 	}
 
-	public User(String name, String password, String email, Set<Role> roles, Set<ContactNumber> phone,
-			Set<Address> address) {
+
+
+	public User(Long id, Long points, String name, String password, Boolean isActive, String email, Boolean isCustomer,
+			String passwordConfirm, Set<Role> roles, Set<ContactNumber> phone, Set<Address> address,
+			Timestamp createdAt, Timestamp updatedAt, String updateBy, long refCode, Set<Shipment> shipments,
+			Group groupId) {
 		super();
+		this.id = id;
+		this.points = points;
 		this.name = name;
 		this.password = password;
+		this.isActive = isActive;
 		this.email = email;
+		this.isCustomer = isCustomer;
+		this.passwordConfirm = passwordConfirm;
 		this.roles = roles;
 		this.phone = phone;
 		this.address = address;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.updateBy = updateBy;
+		this.refCode = refCode;
+		Shipments = shipments;
+		this.groupId = groupId;
+	}
+	
+	
 
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", points=" + points + ", name=" + name + ", password=" + password + ", isActive="
+				+ isActive + ", email=" + email + ", isCustomer=" + isCustomer + ", passwordConfirm=" + passwordConfirm
+				+ ", roles=" + roles + ", phone=" + phone + ", address=" + address + ", createdAt=" + createdAt
+				+ ", updatedAt=" + updatedAt + ", updateBy=" + updateBy + ", refCode=" + refCode + ", Shipments="
+				+ Shipments + ", groupId=" + groupId + "]";
 	}
 
 	public User() {

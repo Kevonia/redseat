@@ -26,6 +26,7 @@ public class CalculatorImp implements CalculatorService {
 	public CustomCost calculate(long dutyID, long wegith, double cost) {
 		
 		DutyList  dutyList  = dutylistRepository.findById(dutyID).get();
+
 		Fee  freightFee  = feesRepository.getFreightFee(wegith);
 		
 		Fee  ProcessingFee  = feesRepository.getProcessingFee(wegith);
@@ -43,7 +44,7 @@ public class CalculatorImp implements CalculatorService {
 			finalcost.setCAF((double)2500);
 			finalcost.setStamp((double)100);
 			
-			System.out.print(dutyList);
+		
 			final double totalTax= (finalcost.getCAF() + finalcost.getENVL() +  finalcost.getDuty() +finalcost.getENVL()  +finalcost.getStamp());
 					 
 			finalcost.setDuty(ItemPrice* dutyList.getDuty());
@@ -56,7 +57,7 @@ public class CalculatorImp implements CalculatorService {
 	   }
 
 
-		finalcost.setFreight(freightFee.getValueJmd() + ProcessingFee.getValueJmd());
+		finalcost.setFreight(freightFee.getValueJmd());
 		// TODO Auto-generated method stub
 		return finalcost;
 	}

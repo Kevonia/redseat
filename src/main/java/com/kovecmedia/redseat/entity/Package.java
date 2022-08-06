@@ -1,6 +1,7 @@
 package com.kovecmedia.redseat.entity;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kovecmedia.redseat.model.PackageLocation;
@@ -33,7 +35,7 @@ public class Package {
 	
 	private String seller;
 
-	private long weight;
+	private double weight;
 
 	private double value;
 
@@ -66,7 +68,12 @@ public class Package {
 	@Column(insertable = true, updatable = true, columnDefinition = "string DEFAULT ''")
 	private String packageImg;
 	
+	@Column(name = "type", insertable = true, updatable = true, columnDefinition = "TINYINT DEFAULT 1")
+	
+	private Shppingtype type;
 
+
+	
 	public Long getId() {
 		return id;
 	}
@@ -99,11 +106,11 @@ public class Package {
 		this.seller = seller;
 	}
 
-	public long getWeight() {
+	public double getWeight() {
 		return weight;
 	}
 
-	public void setWeight(long weight) {
+	public void setWeight(double weight) {
 		this.weight = weight;
 	}
 
@@ -248,6 +255,14 @@ public class Package {
 
 	public void setUpdateBy(String updateBy) {
 		this.updateBy = updateBy;
+	}
+
+	public Shppingtype getType() {
+		return type;
+	}
+
+	public void setType(Shppingtype type) {
+		this.type = type;
 	}
 
 	

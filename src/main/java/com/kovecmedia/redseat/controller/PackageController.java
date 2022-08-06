@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,22 +49,37 @@ public class PackageController {
 		return packages;
 	}
 	
+	@GetMapping(value = "/value/{id}", produces = "application/json")
+	public long getValue(@PathVariable long id) {
+				
+		logger.info("Here");
+		long value = packegeService.getValueByUser(id);
+		logger.info(value);
+		return value;
+	}
+	
 	@PostMapping(value = "/create", produces = "application/json")
-	public ResponseEntity<MessageResponse> getbyId(@Valid @RequestBody  Package package1) {
+	public Package create(@Valid @RequestBody  Package package1) throws Exception {
                 
 		if (packageRepository.existsByTrackingNumber(package1.getTrackingNumber())) {
-			return ResponseEntity.badRequest().body(new MessageResponse("TrackingNumber is already in exits!"));
+			throw new Exception("TrackingNumber is already in exits!");
 		}
-		packegeService.add(package1);
 		
-		
-		return  ResponseEntity.ok(new MessageResponse("Saved"));
+		return packegeService.add(package1);
 	}
+	
+	
+	@PutMapping(value = "/edit", produces = "application/json")
+	public Package edit(@Valid @RequestBody  Package package1) throws Exception {
+                
+		return packegeService.add(package1);
+	}
+	
 	@PostMapping(value = "/userPoint", produces = "application/json")
-	public ResponseEntity<MessageResponse> userPoint(@Valid @RequestBody  Package package1,long points) {
+	public ResponseEntity<MessageResponse> userPoint(long packageID,long points) {
                 
 		try {
-			packegeService.userPoint(package1, points);
+			packegeService.userPoint(packageID, points);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
