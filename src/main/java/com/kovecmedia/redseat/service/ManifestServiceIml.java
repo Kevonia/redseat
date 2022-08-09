@@ -114,7 +114,7 @@ public class ManifestServiceIml implements ManifestService {
 				bolId.appendChild(bolNature);
 
 				Element bolTypeCode = document.createElement("Bol_type_code");
-				bolTypeCode.appendChild(document.createTextNode("740"));
+				bolTypeCode.appendChild(document.createTextNode("AWB"));
 				bolId.appendChild(bolTypeCode);
 
 				Element transportInformation = document.createElement("Transport_information");
